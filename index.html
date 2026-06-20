@@ -3,21 +3,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ya-Lin Chen 陳亞麟 — Design Scientist &amp; Practitioner</title>
-<meta name="description" content="Ya-Lin Chen 陳亞麟 — Design researcher, educator, and brand co-founder. Assistant Professor at STUST, co-founder of Mieloo Design and HUROYAMA. 37+ patents, NT$21M crowdfunding, 223+ student awards across Reddot, iF, IDEA.">
+<meta name="description" content="Ya-Lin Chen 陳亞麟 — Design researcher, educator, and brand co-founder. Assistant Professor at STUST, co-founder of Mieloo Design and HUROYAMA. 37+ patents, NT$21M crowdfunding, 224+ student awards across Reddot, iF, IDEA.">
 <meta name="author" content="Ya-Lin Chen 陳亞麟">
 <meta name="keywords" content="Ya-Lin Chen, 陳亞麟, industrial design, design educator, STUST, HUROYAMA, Mieloo Design, product design, crowdfunding, design research">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ya-Lin Chen 陳亞麟 — Design Scientist & Practitioner">
-<meta property="og:description" content="Design researcher, educator, and brand co-founder. 37+ patents · NT$21M raised · 223+ student awards at Reddot, iF, IDEA.">
+<meta property="og:description" content="Design researcher, educator, and brand co-founder. 37+ patents · NT$21M raised · 224+ student awards at Reddot, iF, IDEA.">
 <meta property="og:image" content="images/og-cover.jpg">
-<meta property="og:url" content="https://yalinchen.github.io/portfolio/">
+<meta property="og:url" content="https://yalinchenstudio.github.io/Resume2026/">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ya-Lin Chen 陳亞麟 — Design Scientist & Practitioner">
-<meta name="twitter:description" content="Design researcher, educator, and brand co-founder. 37+ patents · NT$21M raised · 223+ student awards.">
+<meta name="twitter:description" content="Design researcher, educator, and brand co-founder. 37+ patents · NT$21M raised · 224+ student awards.">
 <meta name="twitter:image" content="images/og-cover.jpg">
 <meta name="theme-color" content="#fbfbfd">
-<style>/* Lin Portfolio v4.4 — CSS merged & cleaned 2026-05 */
+<style>/* Lin Portfolio v4.4.14 — NT$2,100萬+ rewritten to NT$2,100萬+, unified card hover, Stats dashboard tidy, Journey timeline affordances */
 :root {
   --bg: #fbfbfd;
   --bg-alt: #f5f5f7;
@@ -35,10 +35,28 @@
   --r-md: 14px; /* L2 mid: sub-panels, browsers, chart frames */
   --r-sm: 8px;  /* L3 inner: images, thumbnails, icon boxes, small data chips */
   --max: 1240px;
+  /* Motion system (v4.4.13) */
+  --ease-out: cubic-bezier(0.22,1,0.36,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --dur-fast: 0.18s;
+  --dur: 0.28s;
+  --dur-slow: 0.45s;
+  /* Unified card lift shadow (v4.4.14) — two-layer for paper-like depth */
+  --shadow-lift: 0 2px 8px rgba(0,0,0,0.04), 0 20px 44px -16px rgba(0,0,0,0.20);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 html { scroll-behavior: smooth; }
+::selection { background: oklch(0.55 0.18 250 / 0.22); color: var(--ink); }
+/* Reduced-motion: respect user comfort preference (v4.4.13) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 body {
   font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
   background: var(--bg); color: var(--ink);
@@ -85,7 +103,7 @@ a { color: inherit; text-decoration: none; }
   content: ''; position: absolute; left: 0; right: 100%; bottom: -2px;
   height: 1.5px;
   background: linear-gradient(90deg, oklch(0.55 0.18 250), oklch(0.6 0.22 290));
-  transition: right 0.3s cubic-bezier(0.22,1,0.36,1);
+  transition: right 0.3s var(--ease-out);
 }
 .nav a:hover { color: var(--ink); }
 .nav a:hover::after { right: 0; }
@@ -108,7 +126,7 @@ a { color: inherit; text-decoration: none; }
 .h1-line {
   display: inline-block;
   opacity: 0; transform: translateY(28px);
-  animation: h1LineIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: h1LineIn 0.9s var(--ease-out) forwards;
 }
 .h1-line.l1 { animation-delay: 0.1s; }
 .h1-line.l2 { animation-delay: 0.22s; }
@@ -121,7 +139,7 @@ a { color: inherit; text-decoration: none; }
 ::selection { background: oklch(0.55 0.18 250 / 0.18); color: var(--ink); }
 
 /* ─── Scroll offset for fixed nav ─── */
-#manifesto, #pillars, #portfolio, #stats, #contact { scroll-margin-top: 56px; }
+#manifesto, #journey, #pillars, #portfolio, #stats, #contact { scroll-margin-top: 56px; }
 .section { padding: 96px 22px; }
 .container { max-width: var(--max); margin: 0 auto; }
 .narrow { max-width: 980px; margin: 0 auto; }
@@ -136,14 +154,14 @@ a { color: inherit; text-decoration: none; }
 h1,h2,h3,h4 { letter-spacing: -0.025em; }
 
 /* ─── Reveal animation ─── */
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1); }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out); }
 .reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ─── Hero ─── */
 .hero {
   min-height: 100vh; padding: 100px 22px 72px;
   display: flex; flex-direction: column; justify-content: center;
-  position: relative; background: var(--bg); overflow: visible;
+  position: relative; background: var(--bg); overflow-x: clip;
 }
 .hero-grid-bg {
   position: absolute; inset: 0;
@@ -276,6 +294,8 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .hsp-item { padding: 18px 12px; border-bottom: 0.5px solid var(--line); border-radius: var(--r-sm); margin: 0 -12px; transition: background 0.25s, box-shadow 0.35s; }
 .hsp-item:hover { background: rgba(100,120,255,0.03); box-shadow: 0 0 0 1px oklch(0.6 0.22 270 / 0.35), 0 0 0 4px oklch(0.6 0.22 270 / 0.08); }
 .hsp-item:last-child { border-bottom: 0; padding-bottom: 4px; }
+.hsp-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; font-size: 12px; font-weight: 500; letter-spacing: 0.01em; color: var(--ink-4); transition: color var(--dur) var(--ease-out), gap var(--dur) var(--ease-out); }
+.hsp-link:hover { color: var(--accent); gap: 9px; }
 .hsp-num { font-size: clamp(34px,3vw,44px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; margin-bottom: 5px; }
 .hsp-num span {
   font-size: 0.6em; font-weight: 600;
@@ -290,7 +310,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 999px;
   background: rgba(0,0,0,0.035); color: var(--ink-2); border: 0.5px solid rgba(0,0,0,0.07);
-  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease, background 0.2s, color 0.2s, border-color 0.2s;
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s ease, background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer; text-decoration: none;
 }
 .chip:hover { background: var(--ink); color: white; transform: scale(1.06) translateY(-2px); box-shadow: 0 6px 20px -6px rgba(0,0,0,0.18); border-color: var(--ink); }
@@ -310,14 +330,18 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; gap: 0;
   cursor: pointer; outline: none;
-  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.28s ease;
+  transition: transform 0.28s var(--ease-spring), box-shadow 0.28s ease;
 }
 .pillar-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 44px -12px rgba(0,0,0,0.18);
+  box-shadow: var(--shadow-lift);
   border-color: oklch(0.6 0.2 270);
 }
 :focus-visible { outline: none; box-shadow: 0 0 0 2px oklch(0.55 0.18 250); border-radius: 4px; }
+/* Press feedback (v4.4.13) — scoped to small controls to avoid clashing with card hover transforms */
+.chip:active, .cap-pill:active, .portfolio-head .toggle button:active,
+.foot-top-btn:active, .huro-cta:active, .impact-viewall:active, .hsp-link:active { transform: scale(0.97); }
+.chip, .cap-pill, .foot-top-btn, .huro-cta, .impact-viewall { transition: transform var(--dur-fast) var(--ease-spring), color var(--dur) var(--ease-out), background var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
 .awarded-dark-wrap :focus-visible,
 .stats :focus-visible,
 .impact-dark :focus-visible { box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 0 0 4px oklch(0.6 0.22 270); }
@@ -346,7 +370,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   color: var(--ink-3); display: flex; align-items: center; justify-content: space-between;
   transition: color 0.3s ease;
 }
-.pillar-cta span { display: inline-block; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+.pillar-cta span { display: inline-block; transition: transform 0.3s var(--ease-out); }
 .pillar-card:hover .pillar-cta { color: var(--ink); }
 .pillar-card:hover .pillar-cta span { transform: translateX(5px); }
 .pillar-card.science .pillar-icon { background: oklch(0.95 0.04 250); color: oklch(0.45 0.18 250); }
@@ -391,7 +415,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   border: none; background: transparent;
   padding: 9px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;
   color: var(--ink-3); letter-spacing: -0.01em; font: inherit;
-  transition: all 0.22s cubic-bezier(0.22,1,0.36,1); cursor: pointer; position: relative;
+  transition: all 0.22s var(--ease-out); cursor: pointer; position: relative;
 }
 .portfolio-head .toggle button:hover { color: var(--ink); background: rgba(0,0,0,0.05); }
 .tab-count {
@@ -412,7 +436,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .bento {
   background: var(--bg-card); border: 0.5px solid var(--line); border-radius: var(--r-md); padding: 32px;
   display: flex; flex-direction: column; position: relative; overflow: hidden; cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
+  transition: all 0.5s var(--ease-out);
 }
 .bento:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -22px rgba(0,0,0,0.18); border-color: oklch(0.6 0.2 270); background: #fff; }
 .bento .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px; }
@@ -443,7 +467,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .row-head h3 { font-size: 28px; font-weight: 600; letter-spacing: -0.022em; }
 .row-tagline { margin-left: auto; color: var(--ink-4); font-size: 14px; font-style: italic; }
 @keyframes tabSlideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-.portfolio-row.tab-entering { animation: tabSlideIn 0.28s cubic-bezier(0.22,1,0.36,1) forwards; }
+.portfolio-row.tab-entering { animation: tabSlideIn 0.28s var(--ease-out) forwards; }
 
 /* ─── Stats Dashboard ─── */
 .stats { background: #000; color: #f5f5f7; padding: 100px 22px; position: relative; overflow: hidden; }
@@ -461,7 +485,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.08);
   backdrop-filter: blur(20px); border-radius: var(--r-md); padding: 36px;
   display: flex; flex-direction: column; cursor: pointer;
-  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), opacity 0.6s cubic-bezier(0.22,1,0.36,1), box-shadow 0.28s ease;
+  transition: transform 0.22s var(--ease-spring), opacity 0.6s var(--ease-out), box-shadow 0.28s ease;
 }
 .stat-tile:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0,0,40,0.35); }
 .stat-tile:hover .num { filter: brightness(1.12); }
@@ -479,7 +503,13 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .stat-tile .desc { font-size: 15px; color: var(--ink-dark); line-height: 1.6; margin-top: 20px; }
 .stat-tile .progress { margin-top: auto; padding-top: 24px; display: flex; gap: 6px; align-items: center; font-size: 12px; color: #6e6e73; }
 .stat-tile .bar { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
-.stat-tile .bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent-ios), #5e5ce6); border-radius: 999px; width: 0; transition: width 1.6s cubic-bezier(0.22,1,0.36,1); }
+.stat-tile .bar > i { display: block; height: 100%; width: 100%; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg, var(--accent-ios), #5e5ce6); border-radius: 999px; transition: transform 1s var(--ease-out); }
+/* Academic summary card (v4.4.14) — merges the four small metrics into one anchored tile */
+.stat-academic .academic-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+.stat-academic .ac-metric { flex: 1 1 150px; min-width: 130px; }
+.stat-academic .ac-metric .num { font-size: clamp(34px,3.6vw,52px); }
+.stat-academic .ac-lbl { font-size: 12px; color: var(--ink-dark); margin-top: 6px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+@media (max-width: 600px) { .stat-academic .ac-metric { flex: 1 1 45%; } }
 /* Cursor halo */
 .cursor-halo { position: absolute; width: 360px; height: 360px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(100,70,255,0.09) 0%, transparent 70%); transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.4s; z-index: 0; top: 0; left: 0; }
 
@@ -491,7 +521,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   border-radius: 0 999px 999px 0;
   background: linear-gradient(180deg, oklch(0.55 0.18 250), oklch(0.48 0.22 295));
   opacity: 0;
-  transition: opacity 0.3s ease, height 0.4s cubic-bezier(0.22,1,0.36,1);
+  transition: opacity 0.3s ease, height 0.4s var(--ease-out);
 }
 .pillar-card:hover::before { opacity: 1; height: 72px; }
 .pillar-card.dark-pillar::before {
@@ -518,7 +548,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   width: 4px; height: 40px;
   border-radius: 0 999px 999px 0;
   background: linear-gradient(180deg, oklch(0.55 0.18 250), oklch(0.48 0.22 295));
-  opacity: 0; transition: opacity 0.3s ease, height 0.4s cubic-bezier(0.22,1,0.36,1);
+  opacity: 0; transition: opacity 0.3s ease, height 0.4s var(--ease-out);
 }
 .bento.b-8:hover::before, .bento.b-6:hover::before { opacity: 1; height: 64px; }
 
@@ -771,6 +801,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   position: absolute; top: 0; bottom: 0; width: 80px; z-index: 10;
   display: flex; align-items: center;
   opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  border: 0; cursor: pointer; color: inherit; font: inherit; background: transparent;
 }
 .ac-arrow.left  { left: 0;  justify-content: flex-start; padding-left: 10px;
   background: linear-gradient(to right, rgba(6,10,24,0.75), transparent); }
@@ -799,7 +830,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   border-right: 0.5px solid rgba(255,255,255,0.07);
   padding: 18px 16px 46px; position: relative;
   display: flex; flex-direction: column; cursor: pointer;
-  transition: transform 0.32s cubic-bezier(0.22,1,0.36,1), opacity 0.32s, background 0.2s;
+  transition: transform 0.32s var(--ease-out), opacity 0.32s, background 0.2s;
   border-top: none; border-bottom: none; border-left: none;
   font: inherit; color: inherit; text-align: left;
 }
@@ -810,7 +841,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .ac-card:hover .proj-arrow { color: oklch(0.7 0.2 280); transform: translate(2px,-2px); }
 
 .ac-progress { height: 2px; background: rgba(255,255,255,0.08); border-radius: 999px; margin: 10px 40px 0; overflow: hidden; }
-.ac-progress-fill { height: 100%; background: linear-gradient(90deg, oklch(0.65 0.18 265), oklch(0.6 0.22 290)); border-radius: 999px; transition: width 0.45s cubic-bezier(0.22,1,0.36,1); }
+.ac-progress-fill { height: 100%; background: linear-gradient(90deg, oklch(0.65 0.18 265), oklch(0.6 0.22 290)); border-radius: 999px; transition: width 0.45s var(--ease-out); }
 .ac-dots { display: flex; gap: 6px; justify-content: center; margin: 8px 40px 16px; }
 .ac-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.25s; border: none; padding: 0; }
 .ac-dot.on { background: oklch(0.65 0.18 265); width: 20px; border-radius: 3px; }
@@ -818,24 +849,25 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 /* Gallery modal */
 .gallery-shell { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.28s; }
 .gallery-shell.in { opacity: 1; }
-.gallery-modal { background: #1a1a1a; border-radius: var(--r-lg); width: min(920px, 94vw); max-height: 86vh; overflow-y: auto; padding: 36px; position: relative; transform: translateY(16px) scale(0.97); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); border: 0.5px solid rgba(130,150,255,0.2); }
+.gallery-modal { background: #1a1a1a; border-radius: var(--r-lg); width: min(920px, 94vw); max-height: 86vh; overflow-y: auto; padding: 36px; position: relative; transform: translateY(16px) scale(0.97); transition: transform 0.3s var(--ease-out); border: 0.5px solid rgba(130,150,255,0.2); }
 .gallery-shell.in .gallery-modal { transform: none; }
 .gallery-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.6); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
 .gallery-close:hover { background: rgba(255,255,255,0.2); }
 .gallery-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-.gallery-item { border-radius: var(--r-sm); overflow: hidden; aspect-ratio: 4/3; position: relative; transition: transform 0.25s; }
-.gallery-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; }
+.gallery-item { border-radius: var(--r-sm); overflow: hidden; aspect-ratio: 4/3; position: relative; transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
+.gallery-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; transition: transform var(--dur-slow) var(--ease-out); }
 .gallery-item img.loaded { display: block; }
-.gallery-item svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
-.gallery-item:hover { transform: scale(1.03); }
+.gallery-item svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; transition: transform var(--dur-slow) var(--ease-out); }
+.gallery-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.gallery-item:hover img, .gallery-item:hover svg { transform: scale(1.06); }
 .gallery-item-label {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 28px 10px 8px; font-size: 11px; color: rgba(255,255,255,0.92);
   font-weight: 500; letter-spacing: 0.02em;
   background: linear-gradient(to top, rgba(0,0,0,0.72), transparent);
   opacity: 0; transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.22,1,0.36,1);
+  transition: opacity 0.25s ease, transform 0.25s var(--ease-out);
 }
 .gallery-item:hover .gallery-item-label { opacity: 1; transform: translateY(0); }
 .proj-year-dk {
@@ -890,9 +922,10 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
 }
 .awarded-track { display: flex; gap: 12px; width: max-content; animation: awarded-scroll 80s linear infinite; align-items: stretch; }
-.awarded-marquee:hover .awarded-track { animation-play-state: paused; }
+.awarded-marquee:hover .awarded-track,
+.awarded-marquee:focus-within .awarded-track { animation-play-state: paused; }
 @keyframes awarded-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.aw-tile { flex-shrink: 0; width: 196px; background: rgba(255,255,255,0.05); border-radius: var(--r-sm); overflow: hidden; display: flex; flex-direction: column; border: 0.5px solid rgba(255,255,255,0.09); margin: 0; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+.aw-tile { flex-shrink: 0; width: 196px; background: rgba(255,255,255,0.05); border-radius: var(--r-sm); overflow: hidden; display: flex; flex-direction: column; border: 0.5px solid rgba(255,255,255,0.09); margin: 0; transition: transform 0.4s var(--ease-out); }
 .aw-tile:hover { transform: translateY(-3px); }
 .aw-art { height: 126px; width: 100%; background: var(--c2, #1d1d1f); position: relative; overflow: hidden; }
 .aw-art svg { display: block; width: 100%; height: 100%; }
@@ -1011,7 +1044,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .patents-dark-wrap .pb-v { color: #1d1d1f; }
 
 /* ─── Social Impact tag cloud ─── */
-.impact-cloud { width: 100%; border: 0.5px solid var(--line); background: var(--bg-card); border-radius: var(--r-lg); padding: 32px 36px 36px; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: all 0.3s cubic-bezier(0.22,1,0.36,1); display: block; }
+.impact-cloud { width: 100%; border: 0.5px solid var(--line); background: var(--bg-card); border-radius: var(--r-lg); padding: 32px 36px 36px; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: all 0.3s var(--ease-out); display: block; }
 .impact-cloud:hover { border-color: var(--ink); transform: translateY(-3px); box-shadow: 0 30px 60px -22px rgba(0,0,0,0.14); }
 .impact-cloud-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; padding-bottom: 22px; margin-bottom: 22px; border-bottom: 0.5px solid var(--line); font-size: 13px; color: var(--ink-2); font-weight: 500; letter-spacing: -0.01em; }
 .icl { display: inline-flex; align-items: center; gap: 8px; }
@@ -1022,7 +1055,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .icl-cta { margin-left: auto; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); transition: color 0.25s, gap 0.25s; display: inline-flex; gap: 6px; align-items: center; }
 .impact-cloud:hover .icl-cta { color: var(--ink); gap: 12px; }
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.tg { display: inline-block; padding: 8px 14px; border-radius: 999px; font-size: 13px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 500; border: 0.5px solid transparent; white-space: nowrap; transition: all 0.22s cubic-bezier(0.22,1,0.36,1); }
+.tg { display: inline-block; padding: 8px 14px; border-radius: 999px; font-size: 13px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 500; border: 0.5px solid transparent; white-space: nowrap; transition: all 0.22s var(--ease-out); }
 .tg-review   { background: oklch(0.96 0.025 250); color: oklch(0.4 0.16 250); border-color: oklch(0.9 0.04 250); }
 .tg-training { background: oklch(0.96 0.03 60);   color: oklch(0.5 0.16 50);  border-color: oklch(0.9 0.05 60); }
 .tg-voice    { background: oklch(0.96 0.025 155); color: oklch(0.4 0.13 155); border-color: oklch(0.9 0.04 155); }
@@ -1057,7 +1090,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
   transition: all 0.3s; overflow: hidden;
 }
 .impact-tile:hover { border-color: var(--ink); transform: translateY(-2px); }
-.impact-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cat, var(--ink-4)); transition: width 0.3s cubic-bezier(0.22,1,0.36,1); }
+.impact-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cat, var(--ink-4)); transition: width 0.3s var(--ease-out); }
 .impact-tile:hover::before { width: 6px; }
 .impact-tile::after { content: '↗'; position: absolute; top: 22px; right: 22px; font-size: 18px; color: var(--ink-4); transition: color 0.25s, transform 0.25s; }
 .impact-tile:hover::after { color: var(--cat, var(--accent)); transform: translate(2px,-2px); }
@@ -1089,7 +1122,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .nd-label .en { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.32); transition: color 0.2s; white-space: nowrap; }
 .nd-label.hovered .zh { color: white; }
 .nd-label.hovered .en { color: oklch(0.68 0.18 268); }
-.nd-popup { position: absolute; transform: translateX(-50%); background: oklch(0.20 0.1 268/0.96); border: 0.5px solid oklch(0.48 0.18 268/0.55); border-radius: var(--r-sm); padding: 14px 18px; min-width: 180px; max-width: 220px; pointer-events: none; opacity: 0; transition: opacity 0.18s, transform 0.22s cubic-bezier(0.34,1.56,0.64,1); backdrop-filter: blur(12px); z-index: 50; }
+.nd-popup { position: absolute; transform: translateX(-50%); background: oklch(0.20 0.1 268/0.96); border: 0.5px solid oklch(0.48 0.18 268/0.55); border-radius: var(--r-sm); padding: 14px 18px; min-width: 180px; max-width: 220px; pointer-events: none; opacity: 0; transition: opacity 0.18s, transform 0.22s var(--ease-spring); backdrop-filter: blur(12px); z-index: 50; }
 .nd-popup.visible { opacity: 1; }
 .nd-popup .pop-en { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.68 0.18 268); margin-bottom: 5px; }
 .nd-popup .pop-zh { font-size: 18px; font-weight: 600; letter-spacing: -0.025em; color: rgba(255,255,255,0.9); margin-bottom: 7px; line-height: 1.15; }
@@ -1120,7 +1153,7 @@ h1,h2,h3,h4 { letter-spacing: -0.025em; }
 .ci-v { font-size: 14px; color: var(--ink-2); font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; }
 a.ci-v { color: var(--accent); position: relative; }
 a.ci-v:hover { text-decoration: none; color: var(--ink); }
-a.ci-v::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -2px; height: 2px; background: var(--accent); transition: right 0.3s cubic-bezier(0.22,1,0.36,1); }
+a.ci-v::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -2px; height: 2px; background: var(--accent); transition: right 0.3s var(--ease-out); }
 a.ci-v:hover::after { right: 0; }
 
 /* ─── Footer ─── */
@@ -1133,7 +1166,7 @@ a.ci-v:hover::after { right: 0; }
   font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--ink-4); cursor: pointer; background: none; border: 0.5px solid var(--line);
   border-radius: 999px; padding: 6px 12px; font-family: inherit;
-  transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+  transition: all 0.22s var(--ease-out);
 }
 .foot-top-btn:hover { color: var(--ink); border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.12); }
 
@@ -1159,7 +1192,7 @@ a.ci-v:hover { color: var(--ink); }
 a.ci-v::after {
   content: ''; position: absolute; left: 0; bottom: -1px; right: 100%;
   height: 1px; background: linear-gradient(90deg, oklch(0.55 0.18 250), oklch(0.6 0.22 290));
-  transition: right 0.3s cubic-bezier(0.22,1,0.36,1);
+  transition: right 0.3s var(--ease-out);
 }
 a.ci-v:hover::after { right: 0; }
 
@@ -1173,9 +1206,9 @@ a.ci-v:hover::after { right: 0; }
 }
 
 /* ─── hprod-card image zoom ─── */
-.hprod-img-placeholder { overflow: hidden; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+.hprod-img-placeholder { overflow: hidden; transition: transform 0.3s var(--ease-out); }
 .hprod-card:hover .hprod-img-placeholder { transform: scale(1.04); }
-.hprod-card:hover .hprod-img-placeholder img { transform: scale(1.06); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+.hprod-card:hover .hprod-img-placeholder img { transform: scale(1.06); transition: transform 0.4s var(--ease-out); }
 .col-card {
   border-top: 0.5px solid var(--line);
   padding: 20px 0 4px;
@@ -1198,7 +1231,7 @@ a.ci-v:hover::after { right: 0; }
 details[open] .col-summary { color: var(--ink-3); background: var(--bg-alt); }
 .col-summary-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .col-summary-count { color: var(--ink-4); font-variant-numeric: tabular-nums; }
-.col-chevron { font-size: 9px; color: var(--ink-4); transition: transform 0.22s cubic-bezier(0.22,1,0.36,1); display: inline-block; }
+.col-chevron { font-size: 9px; color: var(--ink-4); transition: transform 0.22s var(--ease-out); display: inline-block; }
 details[open] .col-chevron { transform: rotate(180deg); }
 .col-detail-body { border-top: 0.5px solid var(--line); background: var(--bg-card); }
 .col-detail-item {
@@ -1217,7 +1250,7 @@ details[open] .col-chevron { transform: rotate(180deg); }
   position: relative; z-index: 1; background: var(--bg-card); border-radius: var(--r-lg);
   width: 100%; max-width: 720px; margin: 0 auto; display: flex; flex-direction: column;
   box-shadow: 0 60px 120px -24px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(0,0,0,0.07);
-  transform: translateY(24px) scale(0.97); transition: transform 0.44s cubic-bezier(0.22,1,0.36,1);
+  transform: translateY(24px) scale(0.97); transition: transform 0.44s var(--ease-out);
   overflow: hidden;
 }
 .modal::before {
@@ -1285,7 +1318,7 @@ details[open] .col-chevron { transform: rotate(180deg); }
   display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px;
   border: 0.5px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 500;
   color: var(--ink-2); text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+  transition: all 0.25s var(--ease-out);
 }
 .m-livelink:hover {
   border-color: oklch(0.48 0.22 265) !important;
@@ -1343,7 +1376,7 @@ details[open] .col-chevron { transform: rotate(180deg); }
 .cap-divider { height: 0.5px; background: var(--line); margin: 20px 0; }
 .cap-range-label { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 10px; }
 .cap-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.cap-pill { display: inline-flex; align-items: center; font-size: 14px; font-weight: 500; color: var(--ink-2); background: var(--bg-alt); border: 0.5px solid var(--line); border-radius: 999px; padding: 7px 16px; cursor: default; transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1); }
+.cap-pill { display: inline-flex; align-items: center; font-size: 14px; font-weight: 500; color: var(--ink-2); background: var(--bg-alt); border: 0.5px solid var(--line); border-radius: 999px; padding: 7px 16px; cursor: default; transition: all 0.22s var(--ease-spring); }
 .cap-pill:hover { border-color: oklch(0.5 0.18 265); color: oklch(0.4 0.2 265); transform: translateY(-1.5px); box-shadow: 0 4px 10px -4px oklch(0.5 0.18 265/0.2); }
 .cap-pill.first { background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.42 0.22 295)); border-color: transparent; color: white; }
 .cap-pill.first:hover { transform: translateY(-1.5px); box-shadow: 0 4px 14px -4px oklch(0.48 0.22 295/0.5); color: white; }
@@ -1357,12 +1390,14 @@ details[open] .col-chevron { transform: rotate(180deg); }
 .cap-ax-y { position: absolute; top: 0; bottom: 0; left: 50%; width: 0.5px; background: var(--line); }
 .cap-ql { position: absolute; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: oklch(0.52 0.18 260/0.45); line-height: 1.3; }
 .cap-ql.tl { top: 7px; left: 9px; } .cap-ql.tr { top: 7px; right: 9px; text-align: right; } .cap-ql.bl { bottom: 7px; left: 9px; } .cap-ql.br { bottom: 7px; right: 9px; text-align: right; }
-.cap-dot { position: absolute; transform: translate(-50%,-50%); z-index: 3; cursor: pointer; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.cap-dot { position: absolute; transform: translate(-50%,-50%); z-index: 3; cursor: pointer; transition: transform 0.25s var(--ease-spring); display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .cap-dot:hover { transform: translate(-50%,-50%) scale(1.3); z-index: 10; }
 .cap-dot-circle { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.42 0.22 295)); box-shadow: 0 0 0 2px rgba(255,255,255,0.88), 0 2px 7px oklch(0.48 0.22 295/0.38); transition: box-shadow 0.18s; }
 .cap-dot:hover .cap-dot-circle { box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 4px 16px oklch(0.48 0.22 295/0.62); }
 .cap-dot-lbl { font-size: 11px; font-weight: 600; color: var(--ink-2); white-space: nowrap; background: rgba(251,251,253,0.93); padding: 1px 5px; border-radius: 3px; border: 0.5px solid var(--line); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
-.cap-dot:hover .cap-dot-lbl { opacity: 1; }
+.cap-dot:hover .cap-dot-lbl,
+.cap-dot:focus-visible .cap-dot-lbl { opacity: 1; }
+.cap-dot:focus-visible { transform: translate(-50%,-50%) scale(1.3); z-index: 10; }
 .cap-tooltip { padding: 8px 12px; border: 0.5px solid var(--line); border-top: none; border-radius: 0 0 var(--r-sm) var(--r-sm); background: var(--bg-alt); display: flex; align-items: center; gap: 7px; font-size: 12px; min-height: 32px; }
 .cap-tt-dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.42 0.22 295)); flex-shrink: 0; }
 .cap-tt-name { font-weight: 600; color: var(--ink); }
@@ -1380,11 +1415,11 @@ details[open] .col-chevron { transform: rotate(180deg); }
   box-shadow: 0 4px 24px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8);
   text-decoration: none; color: #1d1d1f; overflow: hidden;
   width: 44px;
-  transition: width 0.38s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.28s ease, background 0.2s;
+  transition: width 0.38s var(--ease-spring), box-shadow 0.28s ease, background 0.2s;
 }
 #floatContact:hover { width: 128px; background: rgba(255,255,255,0.95); box-shadow: 0 12px 36px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,1); }
 #floatContact .fc-icon { width: 44px; height: 44px; border-radius: 999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-#floatContact .fc-icon-inner { width: 34px; height: 34px; border-radius: 999px; background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.6 0.22 290)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+#floatContact .fc-icon-inner { width: 34px; height: 34px; border-radius: 999px; background: linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.6 0.22 290)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.3s var(--ease-spring); }
 #floatContact:hover .fc-icon-inner { transform: rotate(-8deg) scale(1.05); }
 #floatContact .fc-label { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; padding-right: 10px; opacity: 0; transform: translateX(-6px); transition: opacity 0.2s 0.15s, transform 0.25s 0.12s; }
 #floatContact:hover .fc-label { opacity: 1; transform: translateX(0); }
@@ -1427,6 +1462,13 @@ details[open] .col-chevron { transform: rotate(180deg); }
 }
 @media (max-width: 720px) {
   .hero-meta { grid-template-columns: 1fr; gap: 24px; }
+  /* RWD v4.4.13: Capability block stacks to single column (fixes 375 horizontal overflow) */
+  .cap-block { grid-template-columns: 1fr; gap: 20px; padding: 28px 0 36px; }
+  .cap-matrix { min-height: 300px; }
+  /* RWD v4.4.13: Portfolio filter scrolls horizontally instead of clipping */
+  .portfolio-head .toggle { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .portfolio-head .toggle::-webkit-scrollbar { display: none; }
+  .portfolio-head .toggle button { flex: 0 0 auto; white-space: nowrap; }
 }
 
 /* ── Image placeholder ── */
@@ -1435,6 +1477,57 @@ img.img-placeholder {
   background: linear-gradient(135deg, #e8e8ea 0%, #d2d2d7 100%);
   border-radius: var(--r-sm);
 }
+
+/* ─── Career Journey (horizontal timeline) ─── */
+.journey { background: var(--bg); padding: 80px 0 96px; overflow: clip; }
+.journey-head { text-align: center; padding: 0 22px; margin-bottom: 6px; }
+.journey-head h2 { font-size: clamp(32px,4vw,56px); font-weight: 600; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 16px; }
+.journey-head h2 .grey { color: var(--ink-3); }
+.journey-head p { font-size: 17px; color: var(--ink-3); max-width: 680px; margin: 0 auto; font-weight: 400; text-wrap: pretty; }
+.jr-legend { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin-top: 22px; font-size: 11px; color: var(--ink-4); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+.jr-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.jr-d { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: var(--ink-4); }
+.jr-d.aca { background: oklch(0.55 0.16 250); }
+.jr-d.ind { background: oklch(0.5 0.13 150); }
+.jr-d.gold { background: oklch(0.7 0.18 75); box-shadow: 0 0 0 3px oklch(0.7 0.18 75 / 0.18); }
+.jr-scroll { overflow-x: auto; overflow-y: hidden; padding: 28px 0; scrollbar-width: thin; cursor: grab; -webkit-overflow-scrolling: touch;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 56px, #000 calc(100% - 56px), transparent 100%); }
+.jr-scroll.at-start { -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 56px), transparent 100%); mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 56px), transparent 100%); }
+.jr-scroll.at-end { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 56px, #000 100%); mask-image: linear-gradient(to right, transparent 0, #000 56px, #000 100%); }
+.jr-scroll.at-start.at-end { -webkit-mask-image: none; mask-image: none; }
+.jr-scroll:focus-visible { outline: none; box-shadow: inset 0 0 0 2px oklch(0.55 0.18 250 / 0.5); border-radius: var(--r-sm); }
+.jr-scroll.drag { cursor: grabbing; }
+.jr-scroll::-webkit-scrollbar { height: 6px; }
+.jr-scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+/* tick lights up when its card is hovered/focused (v4.4.14) */
+.jr-col:hover .jr-tick, .jr-col:focus-within .jr-tick { background: oklch(0.55 0.2 270); box-shadow: 0 0 0 4px oklch(0.55 0.2 270 / 0.18); }
+.jr-col:hover .jr-tick.gold, .jr-col:focus-within .jr-tick.gold { background: oklch(0.7 0.18 75); box-shadow: 0 0 0 5px oklch(0.7 0.18 75 / 0.22); }
+.jr-rail { position: relative; display: flex; align-items: stretch; min-width: 1680px; height: 320px; padding: 0 64px; }
+.jr-rail::before { content: ""; position: absolute; left: 64px; right: 64px; top: 50%; height: 1px; transform: translateY(-50%); background: var(--line); }
+.jr-col { position: relative; flex: 0 0 124px; }
+.jr-tick { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-4); transform: translate(-50%,-50%); z-index: 2; border: 2px solid var(--bg); }
+.jr-tick.gold { background: oklch(0.7 0.18 75); box-shadow: 0 0 0 4px oklch(0.7 0.18 75 / 0.16); }
+.jr-yr { position: absolute; left: 50%; top: calc(50% + 14px); transform: translateX(-50%); font-size: 12px; font-weight: 600; color: var(--ink-4); letter-spacing: 0.02em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.jr-col::after { content: ""; position: absolute; left: 50%; width: 1px; background: var(--line); transform: translateX(-50%); z-index: 1; }
+.jr-col.up::after { bottom: 50%; height: 31px; }
+.jr-col.down::after { top: 50%; height: 31px; }
+.jr-card { position: absolute; left: 50%; transform: translateX(-50%); width: 156px; background: var(--bg-card); border: 0.5px solid var(--line); border-radius: var(--r-md); padding: 13px 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); transition: transform 0.28s var(--ease-spring), box-shadow 0.28s ease, border-color 0.28s ease; }
+.jr-card:hover { transform: translateX(-50%) translateY(-6px); box-shadow: var(--shadow-lift); border-color: oklch(0.6 0.2 270); }
+.jr-col.up .jr-card { bottom: calc(50% + 40px); }
+.jr-col.down .jr-card { top: calc(50% + 40px); }
+.jr-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+.jr-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-4); flex-shrink: 0; }
+.jr-card.aca .jr-eyebrow { color: oklch(0.45 0.16 250); }
+.jr-card.aca .jr-eyebrow::before { background: oklch(0.55 0.16 250); }
+.jr-card.ind .jr-eyebrow { color: oklch(0.42 0.12 150); }
+.jr-card.ind .jr-eyebrow::before { background: oklch(0.5 0.13 150); }
+.jr-card.gold .jr-eyebrow { color: oklch(0.52 0.13 75); }
+.jr-card.gold .jr-eyebrow::before { background: oklch(0.7 0.18 75); box-shadow: 0 0 0 2px oklch(0.7 0.18 75 / 0.2); }
+.jr-card .r { font-weight: 600; font-size: 14px; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 3px; }
+.jr-card .o { font-size: 11.5px; color: var(--ink-3); line-height: 1.4; }
+.jr-hint { text-align: center; color: var(--ink-4); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 10px; }
+@media (max-width: 760px) { .journey { padding: 60px 0 72px; } .jr-card { width: 144px; } }
 </style>
 </head>
 <body>
@@ -1446,6 +1539,7 @@ img.img-placeholder {
     <div class="nav-brand">Ya-Lin Chen <span>· 陳亞麟</span></div>
     <ul>
       <li><a href="#manifesto">Identity</a></li>
+      <li><a href="#journey">Journey</a></li>
       <li><a href="#pillars">Pillars</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#stats">Impact</a></li>
@@ -1564,11 +1658,11 @@ img.img-placeholder {
       <div class="hero-stats-panel">
         <div class="hsp-header">By the numbers</div>
         <div class="hsp-item">
-          <div class="hsp-num">223<span>+</span></div>
+          <div class="hsp-num">224<span>+</span></div>
           <div class="hsp-lbl">Student Awards Mentored</div>
         </div>
         <div class="hsp-item">
-          <div class="hsp-num">NT$21<span>M+</span></div>
+          <div class="hsp-num">NT$2,100<span>萬+</span></div>
           <div class="hsp-lbl">Crowdfunding Raised</div>
         </div>
         <div class="hsp-item">
@@ -1579,19 +1673,17 @@ img.img-placeholder {
           <div class="hsp-num">37</div>
           <div class="hsp-lbl">Granted Patents</div>
         </div>
+        <a class="hsp-link" href="#stats">Full dashboard <span aria-hidden="true">↓</span></a>
       </div>
     </div>
 
     <!-- Zone 3: Chips — full width -->
     <div class="hero-chips">
       <a class="chip" href="#pillars"><i></i>#HumanAICopilot</a>
-      <a class="chip" href="#pillars"><i></i>#DesignCommunication</a>
       <a class="chip" href="#pillars"><i></i>#DesignResearch</a>
-      <a class="chip" href="#pillars"><i></i>#DigitalStyling</a>
-      <a class="chip" href="#portfolio"><i></i>#ProductDesign</a>
       <a class="chip" href="#pillars"><i></i>#DesignEducation</a>
+      <a class="chip" href="#portfolio"><i></i>#ProductDesign</a>
       <a class="chip" href="#portfolio"><i></i>#BrandFounder</a>
-      <a class="chip" href="#portfolio"><i></i>#PatentHolder</a>
     </div>
 
   </div>
@@ -1604,6 +1696,38 @@ img.img-placeholder {
   </div>
 </header>
 
+<!-- Career Journey -->
+<section class="journey" id="journey">
+  <div class="journey-head reveal">
+    <div class="section-kicker">Career Timeline</div>
+    <h2>One path, <span class="grey">two tracks.</span></h2>
+    <p>學術研究與產業實踐並行——從設計師、工程師，到品牌共同創辦人與助理教授。</p>
+    <div class="jr-legend">
+      <span><i class="jr-d aca"></i>學術 / 教育</span>
+      <span><i class="jr-d ind"></i>產業 / 品牌</span>
+      <span><i class="jr-d gold"></i>里程碑</span>
+    </div>
+  </div>
+  <div class="jr-scroll" id="jrScroll">
+    <div class="jr-rail">
+      <div class="jr-col up"><span class="jr-tick"></span><span class="jr-yr">2004</span><div class="jr-card aca"><div class="jr-eyebrow">學術</div><div class="r">學士 · 工業設計</div><div class="o">國立成功大學 NCKU</div></div></div>
+      <div class="jr-col down"><span class="jr-tick gold"></span><span class="jr-yr">2008</span><div class="jr-card gold"><div class="jr-eyebrow">里程碑</div><div class="r">PB Swiss Tools 金獎</div><div class="o">任職 浩漢產品設計</div></div></div>
+      <div class="jr-col up"><span class="jr-tick"></span><span class="jr-yr">2009</span><div class="jr-card ind"><div class="jr-eyebrow">產業</div><div class="r">研究助理</div><div class="o">國科會 NSC</div></div></div>
+      <div class="jr-col down"><span class="jr-tick"></span><span class="jr-yr">2010</span><div class="jr-card ind"><div class="jr-eyebrow">產業</div><div class="r">設計師</div><div class="o">浩漢產品設計 NOVA</div></div></div>
+      <div class="jr-col up"><span class="jr-tick"></span><span class="jr-yr">2010</span><div class="jr-card aca"><div class="jr-eyebrow">學術</div><div class="r">碩士 · 工業設計</div><div class="o">北卡州立大學 NC State</div></div></div>
+      <div class="jr-col down"><span class="jr-tick"></span><span class="jr-yr">2012</span><div class="jr-card ind"><div class="jr-eyebrow">產業</div><div class="r">專案工程師</div><div class="o">宏碁 創新產品概念設計部</div></div></div>
+      <div class="jr-col up"><span class="jr-tick"></span><span class="jr-yr">2013</span><div class="jr-card ind"><div class="jr-eyebrow">產業</div><div class="r">共同創辦人</div><div class="o">miilu 米鹿設計工作室</div></div></div>
+      <div class="jr-col down"><span class="jr-tick"></span><span class="jr-yr">2015</span><div class="jr-card aca"><div class="jr-eyebrow">學術</div><div class="r">專案講師</div><div class="o">國立成功大學 工業設計學系</div></div></div>
+      <div class="jr-col up"><span class="jr-tick"></span><span class="jr-yr">2016</span><div class="jr-card aca"><div class="jr-eyebrow">學術</div><div class="r">專任講師 → 助理教授</div><div class="o">南臺科技大學 ＋ 米鹿共創</div></div></div>
+      <div class="jr-col down"><span class="jr-tick"></span><span class="jr-yr">2017</span><div class="jr-card aca"><div class="jr-eyebrow">學術</div><div class="r">博士 · 工業設計</div><div class="o">國立成功大學 NCKU</div></div></div>
+      <div class="jr-col up"><span class="jr-tick gold"></span><span class="jr-yr">2019</span><div class="jr-card gold"><div class="jr-eyebrow">里程碑</div><div class="r">浴山 募資啟動</div><div class="o">HUROYAMA 品牌</div></div></div>
+      <div class="jr-col down"><span class="jr-tick gold"></span><span class="jr-yr">2020</span><div class="jr-card gold"><div class="jr-eyebrow">里程碑</div><div class="r">連三年 金點設計獎</div><div class="o">浴山·好摺墊·潔癖刷 ＋iF</div></div></div>
+      <div class="jr-col up"><span class="jr-tick gold"></span><span class="jr-yr">2025</span><div class="jr-card gold"><div class="jr-eyebrow">里程碑</div><div class="r">乾淨刮 · 換換猩球</div><div class="o">新品專案開發</div></div></div>
+    </div>
+  </div>
+  <div class="jr-hint">← 拖曳或捲動瀏覽 →</div>
+</section>
+
 <!-- Three Pillars -->
 <section class="pillars" id="pillars">
   <div class="container">
@@ -1614,7 +1738,7 @@ img.img-placeholder {
     </div>
 
     <div class="pillar-grid">
-      <article class="pillar-card science reveal" data-modal="pillar-science" tabindex="0" role="button" aria-label="Open Theoretical Inquiry detail">
+      <article class="pillar-card science reveal" data-modal="pillar-science" aria-haspopup="dialog" tabindex="0" role="button" aria-label="Open Theoretical Inquiry detail">
         <div class="pillar-num">01 · THEORETICAL INQUIRY</div>
         <div class="pillar-icon-row">
           <div class="pillar-icon">α</div>
@@ -1638,7 +1762,7 @@ img.img-placeholder {
         <div class="pillar-cta">View detail <span aria-hidden="true">→</span></div>
       </article>
 
-      <article class="pillar-card teach reveal" data-modal="pillar-teach" tabindex="0" role="button" aria-label="Open Pedagogical Guidance detail">
+      <article class="pillar-card teach reveal" data-modal="pillar-teach" aria-haspopup="dialog" tabindex="0" role="button" aria-label="Open Pedagogical Guidance detail">
         <div class="pillar-num">02 · PEDAGOGICAL GUIDANCE</div>
         <div class="pillar-icon-row">
           <div class="pillar-icon">β</div>
@@ -1649,20 +1773,21 @@ img.img-placeholder {
         <p>助理教授，指導 Ya-Lin Chen Studio 穩定榮獲 Reddot、iF、IDEA、Golden Pin 等一線國際設計獎殊榮。</p>
 
         <ul class="pillar-list">
-          <li><span class="dot gold"></span><b>Reddot Winner ×3</b> · iF Winner ×2</li>
-          <li><span class="dot gold"></span><b>JoWalk</b> · 史丹福銀髮設計競賽 · 亞洲區唯一入圍全球決賽</li>
-          <li><span class="dot"></span>IDEA Bronze ×3 · Silver ×1 · Finalist ×9</li>
+          <li><span class="dot gold"></span><b>Reddot Winner ×5</b></li>
+          <li><span class="dot gold"></span><b>iF Winner ×2</b></li>
+          <li><span class="dot gold"></span><b>IDEA Silver ×1</b> · <b>Bronze ×4</b> · Finalist ×9</li>
+          <li><span class="dot"></span>史丹福銀髮設計競賽 · 亞洲區唯一入圍全球決賽</li>
           <li><span class="dot"></span>Kymco 光陽盃 金 ×1 · 銀 ×5 · 銅 ×5</li>
         </ul>
 
         <div class="pillar-stats">
           <div class="pillar-stat"><span class="num">10+</span><span class="lbl">Years on Faculty</span></div>
-          <div class="pillar-stat"><span class="num">223+</span><span class="lbl">Student Awards</span></div>
+          <div class="pillar-stat"><span class="num">224+</span><span class="lbl">Student Awards</span></div>
         </div>
         <div class="pillar-cta">View detail <span aria-hidden="true">→</span></div>
       </article>
 
-      <article class="pillar-card industry dark-pillar reveal" data-modal="pillar-industry" tabindex="0" role="button" aria-label="Open Industrial Innovation detail">
+      <article class="pillar-card industry dark-pillar reveal" data-modal="pillar-industry" aria-haspopup="dialog" tabindex="0" role="button" aria-label="Open Industrial Innovation detail">
         <div class="pillar-num">03 · INDUSTRIAL INNOVATION</div>
         <div class="pillar-icon-row">
           <div class="pillar-icon">γ</div>
@@ -1674,13 +1799,13 @@ img.img-placeholder {
 
         <ul class="pillar-list">
           <li><span class="dot gold"></span><b>HUROYAMA 浴山</b> · 量產上市 5 件 · 19 次全數達標</li>
-          <li><span class="dot"></span>群眾募資 NT$ 21M+ · 21,420 backers · 6 平台 4 國</li>
+          <li><span class="dot"></span>群眾募資 NT$ 2,100萬+ · 21,420 backers · 6 平台 4 國</li>
           <li><span class="dot"></span>37 件核准專利 · 設計 21 / 新型 10 / 發明 6 / 美國 1</li>
           <li><span class="dot"></span>產學合作 34 案 · ITRI · HOUSE 好室喵 · 意力特通貿等</li>
         </ul>
 
         <div class="pillar-stats">
-          <div class="pillar-stat"><span class="num" data-count="21" data-prefix="NT$" data-suffix="M+">NT$21<span class="num-unit">M+</span></span><span class="lbl">Crowdfunding Raised</span></div>
+          <div class="pillar-stat"><span class="num" data-count="2100" data-prefix="NT$" data-suffix="萬+">NT$2,100<span class="num-unit">萬+</span></span><span class="lbl">Crowdfunding Raised</span></div>
           <div class="pillar-stat"><span class="num">37</span><span class="lbl">Granted Patents</span></div>
         </div>
         <div class="pillar-cta">View detail <span aria-hidden="true">→</span></div>
@@ -1760,11 +1885,11 @@ img.img-placeholder {
 
     <div class="portfolio-head reveal">
       <h2>Portfolio.&nbsp;</h2>
-      <div class="toggle" role="tablist">
-        <button class="on" data-tab="all">All</button>
-        <button data-tab="market">Market Ready</button>
-        <button data-tab="awarded">Awarded Concepts</button>
-        <button data-tab="patents">Granted Patents</button>
+      <div class="toggle" role="tablist" aria-label="Portfolio filter">
+        <button class="on" data-tab="all" role="tab" aria-selected="true">All</button>
+        <button data-tab="market" role="tab" aria-selected="false">Market Ready</button>
+        <button data-tab="awarded" role="tab" aria-selected="false">Awarded Concepts</button>
+        <button data-tab="patents" role="tab" aria-selected="false">Granted Patents</button>
       </div>
     </div>
 
@@ -1782,7 +1907,7 @@ img.img-placeholder {
             <div class="huro-status"><span class="huro-dot"></span>CO-FOUNDED · 米鹿設計 · 2019–NOW</div>
             <div class="huro-name">HUROYAMA.</div>
             <div class="huro-tagline">Designed for daily life.</div>
-            <p class="huro-desc">米鹿設計共同創辦人，主導 HUROYAMA 品牌從零到市場的全程統籌：產品定義、製造落地、視覺策略、募資企劃、跨國行銷，19 場全數達標，NT$ 21M 全球市場驗證。</p>
+            <p class="huro-desc">米鹿設計共同創辦人，主導 HUROYAMA 品牌從零到市場的全程統籌：產品定義、製造落地、視覺策略、募資企劃、跨國行銷，19 場全數達標，NT$ 2,100萬 全球市場驗證。</p>
             <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
               <a class="huro-cta" href="https://www.mieloo-corp.com/" target="_blank" rel="noopener">Mieloo Design →</a>
             </div>
@@ -1790,7 +1915,7 @@ img.img-placeholder {
           <div class="huro-metrics">
             <div class="huro-metric-hero">
               <div class="huro-m-label">LIFETIME CROWDFUNDING</div>
-              <div class="huro-m-big">NT$ 21<span class="huro-m-unit">M+</span></div>
+              <div class="huro-m-big">NT$ 2,100<span class="huro-m-unit">萬+</span></div>
               <div class="huro-m-pills">
                 <span class="huro-pill">19 campaigns</span>
                 <span class="huro-pill">6 platforms</span>
@@ -1815,10 +1940,10 @@ img.img-placeholder {
 
         <!-- Bottom: 5 product cards -->
         <div class="huro-products">
-          <button class="hprod-card" data-modal="prod-huroswipe">
+          <button class="hprod-card" data-modal="prod-huroswipe" aria-haspopup="dialog">
             <div class="hprod-year">2026</div>
             <div class="hprod-img hprod-img-placeholder">
-              <img src="https://pic.mieloo-corp.com/uploads/medium2x/24/c3/4c2d247d97c6ad25754e7ffdf2bd.jpg" alt="prod-huroswipe" style="width:100%;height:100%;object-fit:cover;">
+              <img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/24/c3/4c2d247d97c6ad25754e7ffdf2bd.jpg" alt="prod-huroswipe" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="hprod-info">
               <div class="hprod-zh">乾淨刮</div>
@@ -1827,10 +1952,10 @@ img.img-placeholder {
             </div>
             <span class="hprod-arrow">↗</span>
           </button>
-          <button class="hprod-card" data-modal="prod-tidybrush">
+          <button class="hprod-card" data-modal="prod-tidybrush" aria-haspopup="dialog">
             <div class="hprod-year">2022</div>
             <div class="hprod-img hprod-img-placeholder">
-              <img src="https://pic.mieloo-corp.com/uploads/medium2x/32/57/c84ded301d610497dce371b35a11.jpg" alt="prod-tidybrush" style="width:100%;height:100%;object-fit:cover;">
+              <img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/32/57/c84ded301d610497dce371b35a11.jpg" alt="prod-tidybrush" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="hprod-info">
               <div class="hprod-zh">潔癖刷</div>
@@ -1839,10 +1964,10 @@ img.img-placeholder {
             </div>
             <span class="hprod-arrow">↗</span>
           </button>
-          <button class="hprod-card" data-modal="prod-huroyama">
+          <button class="hprod-card" data-modal="prod-huroyama" aria-haspopup="dialog">
             <div class="hprod-year">2020</div>
             <div class="hprod-img hprod-img-placeholder">
-              <img src="https://pic.mieloo-corp.com/uploads/original/c1/48/049a546d50032997e9ba6c0f0272.png" alt="prod-huroyama" style="width:100%;height:100%;object-fit:cover;">
+              <img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/c1/48/049a546d50032997e9ba6c0f0272.png" alt="prod-huroyama" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="hprod-info">
               <div class="hprod-zh">浴山</div>
@@ -1854,10 +1979,10 @@ img.img-placeholder {
             </div>
             <span class="hprod-arrow">↗</span>
           </button>
-          <button class="hprod-card" data-modal="prod-origamat">
+          <button class="hprod-card" data-modal="prod-origamat" aria-haspopup="dialog">
             <div class="hprod-year">2021</div>
             <div class="hprod-img hprod-img-placeholder">
-              <img src="https://pic.mieloo-corp.com/uploads/medium/04/0d/6a85cd2a8cd54ba9e393a84dedcd.jpg" alt="prod-origamat" style="width:100%;height:100%;object-fit:cover;">
+              <img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/04/0d/6a85cd2a8cd54ba9e393a84dedcd.jpg" alt="prod-origamat" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="hprod-info">
               <div class="hprod-zh">好摺墊</div>
@@ -1866,10 +1991,10 @@ img.img-placeholder {
             </div>
             <span class="hprod-arrow">↗</span>
           </button>
-          <button class="hprod-card" data-modal="prod-tidyzoo">
+          <button class="hprod-card" data-modal="prod-tidyzoo" aria-haspopup="dialog">
             <div class="hprod-year">2024</div>
             <div class="hprod-img hprod-img-placeholder">
-              <img src="https://pic.mieloo-corp.com/uploads/medium/f6/00/2237abc78c37f781efa3927b9a3b.jpg" alt="prod-tidyzoo" style="width:100%;height:100%;object-fit:cover;">
+              <img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/f6/00/2237abc78c37f781efa3927b9a3b.jpg" alt="prod-tidyzoo" style="width:100%;height:100%;object-fit:cover;">
             </div>
             <div class="hprod-info">
               <div class="hprod-zh">換換猩球</div>
@@ -1890,63 +2015,63 @@ img.img-placeholder {
             <div class="gallery-title">Awarded Concepts · 58 Projects</div>
             <div class="gallery-grid">
               <!-- 2026 -->
-              <div class="gallery-item" style="background:#1a3a6e"><img src="images/works/w-drip-drop-dragon.jpg" alt="滴滴龍" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a3a6e"/><circle cx="55" cy="60" r="30" fill="#0066cc" opacity="0.85"/><rect x="92" y="32" width="40" height="60" rx="5" fill="#f5f5f7" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">滴滴龍 · 2026</div></div>
+              <div class="gallery-item" style="background:#1a3a6e"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/cf/89/d1256cc6491692e0208300126224.jpg" alt="滴滴龍" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a3a6e"/><circle cx="55" cy="60" r="30" fill="#0066cc" opacity="0.85"/><rect x="92" y="32" width="40" height="60" rx="5" fill="#f5f5f7" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">滴滴龍 · 2026</div></div>
 
-              <div class="gallery-item" style="background:#3a2e1c"><img src="images/works/w-i-care.jpg" alt="I Care" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#3a2e1c"/><rect x="28" y="38" width="104" height="56" rx="28" fill="#f4d35e"/><circle cx="62" cy="66" r="9" fill="#3a2e1c"/><circle cx="98" cy="66" r="9" fill="#3a2e1c"/></svg><div class="gallery-item-label">I Care · 2026</div></div>
+              <div class="gallery-item" style="background:#3a2e1c"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/b5/73/6d4b90b469cf5ff4654972fae55b.jpg" alt="I Care" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#3a2e1c"/><rect x="28" y="38" width="104" height="56" rx="28" fill="#f4d35e"/><circle cx="62" cy="66" r="9" fill="#3a2e1c"/><circle cx="98" cy="66" r="9" fill="#3a2e1c"/></svg><div class="gallery-item-label">I Care · 2026</div></div>
 
               <!-- 2025 -->
-              <div class="gallery-item" style="background:#f5e6d8"><img src="https://pic.mieloo-corp.com/uploads/original/1f/c3/f3343857432d57076e2f985aee2d.jpg" alt="安心餵" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f5e6d8"/><circle cx="80" cy="60" r="42" fill="#e63946" opacity="0.88"/><rect x="40" y="54" width="80" height="13" rx="6" fill="#fff"/></svg><div class="gallery-item-label">安心餵 · 2025</div></div>
-              <div class="gallery-item" style="background:#142850"><img src="https://pic.mieloo-corp.com/uploads/medium2x/65/90/36c3a055d92ef200ac9b91282dbc.jpg" alt="Period Guardian" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142850"/><path d="M20 105 Q80 25 140 105" stroke="#a3c4f3" stroke-width="9" fill="none"/><circle cx="80" cy="63" r="11" fill="#fff"/></svg><div class="gallery-item-label">Period Guardian · 2025</div></div>
-              <div class="gallery-item" style="background:#1e3a2f"><img src="https://pic.mieloo-corp.com/uploads/original/7c/73/bc044bfed90cdd1d2ac32f949ad0.jpg" alt="Nature Guardian" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1e3a2f"/><path d="M80 24 C48 48, 48 80, 80 96 C112 80, 112 48, 80 24 Z" fill="#22c55e" opacity="0.8"/><circle cx="80" cy="60" r="12" fill="#fff"/></svg><div class="gallery-item-label">Nature Guardian · 2025</div></div>
+              <div class="gallery-item" style="background:#f5e6d8"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/1f/c3/f3343857432d57076e2f985aee2d.jpg" alt="安心餵" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f5e6d8"/><circle cx="80" cy="60" r="42" fill="#e63946" opacity="0.88"/><rect x="40" y="54" width="80" height="13" rx="6" fill="#fff"/></svg><div class="gallery-item-label">安心餵 · 2025</div></div>
+              <div class="gallery-item" style="background:#142850"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/65/90/36c3a055d92ef200ac9b91282dbc.jpg" alt="Period Guardian" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142850"/><path d="M20 105 Q80 25 140 105" stroke="#a3c4f3" stroke-width="9" fill="none"/><circle cx="80" cy="63" r="11" fill="#fff"/></svg><div class="gallery-item-label">Period Guardian · 2025</div></div>
+              <div class="gallery-item" style="background:#1e3a2f"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/7c/73/bc044bfed90cdd1d2ac32f949ad0.jpg" alt="Nature Guardian" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1e3a2f"/><path d="M80 24 C48 48, 48 80, 80 96 C112 80, 112 48, 80 24 Z" fill="#22c55e" opacity="0.8"/><circle cx="80" cy="60" r="12" fill="#fff"/></svg><div class="gallery-item-label">Nature Guardian · 2025</div></div>
 
               <!-- 2024 -->
-              <div class="gallery-item" style="background:#053b50"><img src="https://pic.mieloo-corp.com/uploads/medium2x/b0/e8/4f3479ed0469739e9568398fb46d.jpg" alt="Refugee Shower" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#053b50"/><rect x="24" y="28" width="112" height="70" rx="9" fill="#56cfe1"/><rect x="40" y="48" width="80" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Refugee Shower · 2024</div></div>
-              <div class="gallery-item" style="background:#2a1f3d"><img src="https://pic.mieloo-corp.com/uploads/medium/ef/be/a9fe6815068d66cd2c56bf4521b3.jpg" alt="帽管家" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#2a1f3d"/><ellipse cx="80" cy="50" rx="50" ry="22" fill="#7c3aed" opacity="0.8"/><rect x="30" y="66" width="100" height="24" rx="4" fill="#5b21b6" opacity="0.7"/></svg><div class="gallery-item-label">帽管家 · 2024</div></div>
-              <div class="gallery-item" style="background:#1a2e10"><img src="https://pic.mieloo-corp.com/uploads/medium/4f/d8/5dc3b7519b3658f05db131c96689.jpg" alt="輕鬆購" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a2e10"/><rect x="28" y="36" width="104" height="60" rx="10" fill="#65a30d" opacity="0.8"/><rect x="44" y="56" width="72" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">輕鬆購 · 2024</div></div>
+              <div class="gallery-item" style="background:#053b50"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/b0/e8/4f3479ed0469739e9568398fb46d.jpg" alt="Refugee Shower" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#053b50"/><rect x="24" y="28" width="112" height="70" rx="9" fill="#56cfe1"/><rect x="40" y="48" width="80" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Refugee Shower · 2024</div></div>
+              <div class="gallery-item" style="background:#2a1f3d"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/ef/be/a9fe6815068d66cd2c56bf4521b3.jpg" alt="帽管家" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#2a1f3d"/><ellipse cx="80" cy="50" rx="50" ry="22" fill="#7c3aed" opacity="0.8"/><rect x="30" y="66" width="100" height="24" rx="4" fill="#5b21b6" opacity="0.7"/></svg><div class="gallery-item-label">帽管家 · 2024</div></div>
+              <div class="gallery-item" style="background:#1a2e10"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/4f/d8/5dc3b7519b3658f05db131c96689.jpg" alt="輕鬆購" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a2e10"/><rect x="28" y="36" width="104" height="60" rx="10" fill="#65a30d" opacity="0.8"/><rect x="44" y="56" width="72" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">輕鬆購 · 2024</div></div>
               <!-- 2023 -->
-              <div class="gallery-item" style="background:#0a2540"><img src="https://pic.mieloo-corp.com/uploads/medium2x/11/5e/7e7f50a844725174d5d318760f84.jpg" alt="DWB Dental" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0a2540"/><circle cx="64" cy="60" r="30" fill="#06d6a0"/><rect x="100" y="38" width="44" height="48" rx="8" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">DWB Dental · 2023</div></div>
-              <div class="gallery-item" style="background:#2d1b69"><img src="https://pic.mieloo-corp.com/uploads/medium/3a/66/5554010c27b6905e11a299745b16.jpg" alt="AR 生物大探險" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#2d1b69"/><rect x="28" y="28" width="104" height="72" rx="10" fill="#7c3aed" opacity="0.7"/><path d="M60 54 L80 44 L100 54 L100 76 L80 86 L60 76 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion · UI</div><div class="gallery-item-label">AR 生物大探險 · 2023</div></div>
-              <div class="gallery-item" style="background:#1e1b4b"><img src="https://pic.mieloo-corp.com/uploads/medium/ea/46/1308a148112fbae2bd90d0588eb1.jpg" alt="肌力家" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1e1b4b"/><path d="M40 90 Q80 28 120 90" stroke="#818cf8" stroke-width="8" fill="none"/><circle cx="80" cy="56" r="10" fill="#818cf8"/></svg><div class="gallery-item-label">肌力家 · 2023</div></div>
-              <div class="gallery-item" style="background:#142838"><img src="https://pic.mieloo-corp.com/uploads/medium/eb/a9/65aee5b496b076bde95ffb88085e.jpg" alt="Y.Our 拼車友" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142838"/><rect x="26" y="30" width="108" height="68" rx="10" fill="#0369a1" opacity="0.8"/><path d="M56 55 L80 45 L104 55 L104 75 L80 85 L56 75 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Y.Our 拼車友 · 2023</div></div>
-              <div class="gallery-item" style="background:#0e1f18"><img src="https://pic.mieloo-corp.com/uploads/medium/f5/c0/412dd473c183f2b80d909f51156e.jpg" alt="Worcamper" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1f18"/><rect x="28" y="34" width="104" height="62" rx="12" fill="#065f46" opacity="0.8"/><path d="M60 52 Q80 44 100 52 L96 76 Q80 84 64 76 Z" fill="#34d399" opacity="0.85"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Worcamper · 2023</div></div>
-              <div class="gallery-item" style="background:#142030"><img src="https://pic.mieloo-corp.com/uploads/medium/16/37/90ce7639a77833f53c814de84c42.jpg" alt="Ocean Guard" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142030"/><path d="M20 70 Q50 50 80 68 Q110 86 140 66" stroke="#38bdf8" stroke-width="7" fill="none"/></svg><div class="gallery-item-label">Ocean Guard · 2023</div></div>
-              <div class="gallery-item" style="background:#1a1010"><img src="https://pic.mieloo-corp.com/uploads/medium/5c/01/0f80f253e537948acae0d8ae2452.jpg" alt="Virus Buster" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1010"/><circle cx="80" cy="60" r="30" fill="#ef4444" opacity="0.8"/><path d="M66 60 L78 72 L96 48" stroke="#fff" stroke-width="5" fill="none"/></svg><div class="gallery-item-label">Virus Buster · 2023</div></div>
-              <div class="gallery-item" style="background:#142838"><img src="https://pic.mieloo-corp.com/uploads/medium/54/5b/ba740706216b1ae8f78d9da12422.jpg" alt="MO DU" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142838"/><rect x="28" y="30" width="104" height="64" rx="10" fill="#3b82f6" opacity="0.7"/><rect x="48" y="50" width="64" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">MO DU · 2023</div></div>
-              <div class="gallery-item" style="background:#162010"><img src="https://pic.mieloo-corp.com/uploads/medium/c8/14/8a1e835712323a6bef82131724c3.jpg" alt="EnvironMAN 分子計劃" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#162010"/><circle cx="80" cy="55" r="28" fill="#22c55e" opacity="0.8"/><circle cx="52" cy="78" r="14" fill="#16a34a" opacity="0.7"/><circle cx="108" cy="78" r="14" fill="#16a34a" opacity="0.7"/></svg><div class="gallery-item-label">EnvironMAN 分子計劃 · 2023</div></div>
+              <div class="gallery-item" style="background:#0a2540"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/11/5e/7e7f50a844725174d5d318760f84.jpg" alt="DWB Dental" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0a2540"/><circle cx="64" cy="60" r="30" fill="#06d6a0"/><rect x="100" y="38" width="44" height="48" rx="8" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">DWB Dental · 2023</div></div>
+              <div class="gallery-item" style="background:#2d1b69"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/3a/66/5554010c27b6905e11a299745b16.jpg" alt="AR 生物大探險" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#2d1b69"/><rect x="28" y="28" width="104" height="72" rx="10" fill="#7c3aed" opacity="0.7"/><path d="M60 54 L80 44 L100 54 L100 76 L80 86 L60 76 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion · UI</div><div class="gallery-item-label">AR 生物大探險 · 2023</div></div>
+              <div class="gallery-item" style="background:#1e1b4b"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/ea/46/1308a148112fbae2bd90d0588eb1.jpg" alt="肌力家" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1e1b4b"/><path d="M40 90 Q80 28 120 90" stroke="#818cf8" stroke-width="8" fill="none"/><circle cx="80" cy="56" r="10" fill="#818cf8"/></svg><div class="gallery-item-label">肌力家 · 2023</div></div>
+              <div class="gallery-item" style="background:#142838"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/eb/a9/65aee5b496b076bde95ffb88085e.jpg" alt="Y.Our 拼車友" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142838"/><rect x="26" y="30" width="108" height="68" rx="10" fill="#0369a1" opacity="0.8"/><path d="M56 55 L80 45 L104 55 L104 75 L80 85 L56 75 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Y.Our 拼車友 · 2023</div></div>
+              <div class="gallery-item" style="background:#0e1f18"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/f5/c0/412dd473c183f2b80d909f51156e.jpg" alt="Worcamper" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1f18"/><rect x="28" y="34" width="104" height="62" rx="12" fill="#065f46" opacity="0.8"/><path d="M60 52 Q80 44 100 52 L96 76 Q80 84 64 76 Z" fill="#34d399" opacity="0.85"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Worcamper · 2023</div></div>
+              <div class="gallery-item" style="background:#142030"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/16/37/90ce7639a77833f53c814de84c42.jpg" alt="Ocean Guard" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142030"/><path d="M20 70 Q50 50 80 68 Q110 86 140 66" stroke="#38bdf8" stroke-width="7" fill="none"/></svg><div class="gallery-item-label">Ocean Guard · 2023</div></div>
+              <div class="gallery-item" style="background:#1a1010"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/5c/01/0f80f253e537948acae0d8ae2452.jpg" alt="Virus Buster" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1010"/><circle cx="80" cy="60" r="30" fill="#ef4444" opacity="0.8"/><path d="M66 60 L78 72 L96 48" stroke="#fff" stroke-width="5" fill="none"/></svg><div class="gallery-item-label">Virus Buster · 2023</div></div>
+              <div class="gallery-item" style="background:#142838"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/54/5b/ba740706216b1ae8f78d9da12422.jpg" alt="MO DU" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#142838"/><rect x="28" y="30" width="104" height="64" rx="10" fill="#3b82f6" opacity="0.7"/><rect x="48" y="50" width="64" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">MO DU · 2023</div></div>
+              <div class="gallery-item" style="background:#162010"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/c8/14/8a1e835712323a6bef82131724c3.jpg" alt="EnvironMAN 分子計劃" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#162010"/><circle cx="80" cy="55" r="28" fill="#22c55e" opacity="0.8"/><circle cx="52" cy="78" r="14" fill="#16a34a" opacity="0.7"/><circle cx="108" cy="78" r="14" fill="#16a34a" opacity="0.7"/></svg><div class="gallery-item-label">EnvironMAN 分子計劃 · 2023</div></div>
               <!-- 2022 -->
-              <div class="gallery-item" style="background:#f5f5f7"><img src="https://pic.mieloo-corp.com/uploads/medium/08/e6/1777e3914fb933af193c9e96b34e.jpg" alt="Wheelchair E-Scooter" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f5f5f7"/><rect x="26" y="46" width="108" height="50" rx="25" fill="#0a84ff"/><circle cx="56" cy="96" r="14" fill="#1d1d1f"/><circle cx="112" cy="96" r="14" fill="#1d1d1f"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Wheelchair E-Scooter · 2022</div></div>
-              <div class="gallery-item" style="background:#1d1d1f"><img src="https://pic.mieloo-corp.com/uploads/medium/b8/a2/01b4e6753c299656f629e9551a5a.jpg" alt="Cookidlike" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><path d="M40 100 L80 38 L120 100 L108 100 L108 108 L52 108 L52 100 Z" fill="#ffb703"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Cookidlike · 2022</div></div>
+              <div class="gallery-item" style="background:#f5f5f7"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/08/e6/1777e3914fb933af193c9e96b34e.jpg" alt="Wheelchair E-Scooter" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f5f5f7"/><rect x="26" y="46" width="108" height="50" rx="25" fill="#0a84ff"/><circle cx="56" cy="96" r="14" fill="#1d1d1f"/><circle cx="112" cy="96" r="14" fill="#1d1d1f"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Wheelchair E-Scooter · 2022</div></div>
+              <div class="gallery-item" style="background:#1d1d1f"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/b8/a2/01b4e6753c299656f629e9551a5a.jpg" alt="Cookidlike" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><path d="M40 100 L80 38 L120 100 L108 100 L108 108 L52 108 L52 100 Z" fill="#ffb703"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Cookidlike · 2022</div></div>
               <!-- 2021 -->
-              <div class="gallery-item" style="background:#0d1b2a"><img src="https://pic.mieloo-corp.com/uploads/original/0e/43/f2dc3fdbd1590ad22d0484fa7f3c.jpg" alt="Tunnel Keeper" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1b2a"/><rect x="24" y="32" width="112" height="68" rx="12" fill="#3b82f6" opacity="0.75"/><circle cx="80" cy="66" r="18" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Tunnel Keeper · 2021</div></div>
-              <div class="gallery-item" style="background:#1d1d1f"><img src="https://pic.mieloo-corp.com/uploads/medium/04/27/c9de301c21705ca04a979853a445.jpg" alt="Go Walk" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><rect x="58" y="28" width="14" height="74" rx="6" fill="#8338ec"/><rect x="88" y="28" width="14" height="74" rx="6" fill="#8338ec"/><rect x="46" y="96" width="68" height="8" rx="4" fill="#fff"/></svg><div class="gallery-item-label">Go Walk · 2021</div></div>
-              <div class="gallery-item" style="background:#0c1a2e"><img src="https://pic.mieloo-corp.com/uploads/original/3a/ea/103abaa737656b0cedb7a37b58d1.jpg" alt="JoinT" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0c1a2e"/><rect x="30" y="30" width="100" height="60" rx="8" fill="#2563eb" opacity="0.8"/><rect x="46" y="48" width="68" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">JoinT · 2021</div></div>
-              <div class="gallery-item" style="background:#1a0a2e"><img src="https://pic.mieloo-corp.com/uploads/medium/d2/f4/b3933163c0d6094d7240e2532239.jpg" alt="OCCU" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a0a2e"/><circle cx="80" cy="60" r="36" fill="none" stroke="#a855f7" stroke-width="7"/><path d="M64 60 L76 72 L96 48" stroke="#a855f7" stroke-width="5" fill="none"/></svg><div class="gallery-item-label">OCCU · 2021</div></div>
-              <div class="gallery-item" style="background:#1f1808"><img src="https://pic.mieloo-corp.com/uploads/medium/c2/1a/582a7a2db64e63420bdbec21f4e6.jpg" alt="SMC 360" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1f1808"/><ellipse cx="80" cy="75" rx="50" ry="22" fill="#d97706" opacity="0.8"/><circle cx="56" cy="90" r="12" fill="#78350f"/><circle cx="104" cy="90" r="12" fill="#78350f"/></svg><div class="gallery-item-label">SMC 360 · 2021</div></div>
-              <div class="gallery-item" style="background:#1f1808"><img src="https://pic.mieloo-corp.com/uploads/medium/76/d4/7f2017a1608e023bf4e15cc2a2fb.jpg" alt="COZY-MaMa" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1f1808"/><ellipse cx="80" cy="70" rx="46" ry="28" fill="#f59e0b" opacity="0.8"/><circle cx="80" cy="46" r="18" fill="#fcd34d" opacity="0.9"/></svg><div class="gallery-item-label">COZY-MaMa · 2021</div></div>
-              <div class="gallery-item" style="background:#0d1e30"><img src="https://pic.mieloo-corp.com/uploads/medium/31/5f/5d99bf282f7022dc5bab2bea5c48.jpg" alt="Mobile Media" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1e30"/><rect x="30" y="28" width="100" height="68" rx="8" fill="#0ea5e9" opacity="0.75"/><rect x="46" y="50" width="68" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Mobile Media · 2021</div></div>
+              <div class="gallery-item" style="background:#0d1b2a"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/0e/43/f2dc3fdbd1590ad22d0484fa7f3c.jpg" alt="Tunnel Keeper" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1b2a"/><rect x="24" y="32" width="112" height="68" rx="12" fill="#3b82f6" opacity="0.75"/><circle cx="80" cy="66" r="18" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">Tunnel Keeper · 2021</div></div>
+              <div class="gallery-item" style="background:#1d1d1f"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/04/27/c9de301c21705ca04a979853a445.jpg" alt="Go Walk" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><rect x="58" y="28" width="14" height="74" rx="6" fill="#8338ec"/><rect x="88" y="28" width="14" height="74" rx="6" fill="#8338ec"/><rect x="46" y="96" width="68" height="8" rx="4" fill="#fff"/></svg><div class="gallery-item-label">Go Walk · 2021</div></div>
+              <div class="gallery-item" style="background:#0c1a2e"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/3a/ea/103abaa737656b0cedb7a37b58d1.jpg" alt="JoinT" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0c1a2e"/><rect x="30" y="30" width="100" height="60" rx="8" fill="#2563eb" opacity="0.8"/><rect x="46" y="48" width="68" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">JoinT · 2021</div></div>
+              <div class="gallery-item" style="background:#1a0a2e"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/d2/f4/b3933163c0d6094d7240e2532239.jpg" alt="OCCU" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a0a2e"/><circle cx="80" cy="60" r="36" fill="none" stroke="#a855f7" stroke-width="7"/><path d="M64 60 L76 72 L96 48" stroke="#a855f7" stroke-width="5" fill="none"/></svg><div class="gallery-item-label">OCCU · 2021</div></div>
+              <div class="gallery-item" style="background:#1f1808"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/c2/1a/582a7a2db64e63420bdbec21f4e6.jpg" alt="SMC 360" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1f1808"/><ellipse cx="80" cy="75" rx="50" ry="22" fill="#d97706" opacity="0.8"/><circle cx="56" cy="90" r="12" fill="#78350f"/><circle cx="104" cy="90" r="12" fill="#78350f"/></svg><div class="gallery-item-label">SMC 360 · 2021</div></div>
+              <div class="gallery-item" style="background:#1f1808"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/76/d4/7f2017a1608e023bf4e15cc2a2fb.jpg" alt="COZY-MaMa" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1f1808"/><ellipse cx="80" cy="70" rx="46" ry="28" fill="#f59e0b" opacity="0.8"/><circle cx="80" cy="46" r="18" fill="#fcd34d" opacity="0.9"/></svg><div class="gallery-item-label">COZY-MaMa · 2021</div></div>
+              <div class="gallery-item" style="background:#0d1e30"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/31/5f/5d99bf282f7022dc5bab2bea5c48.jpg" alt="Mobile Media" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1e30"/><rect x="30" y="28" width="100" height="68" rx="8" fill="#0ea5e9" opacity="0.75"/><rect x="46" y="50" width="68" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Mobile Media · 2021</div></div>
               <!-- 2020 -->
-              <div class="gallery-item" style="background:#1d1d1f"><img src="https://pic.mieloo-corp.com/uploads/original/b9/ce/579cbd9ccfc71a468cc0951dee2e.jpg" alt="C-Drive" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><circle cx="64" cy="60" r="28" fill="#ff6b35" opacity="0.85"/><rect x="96" y="36" width="42" height="54" rx="6" fill="#f5f5f7" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">C-Drive · 2020</div></div>
-              <div class="gallery-item" style="background:#0a1628"><img src="https://pic.mieloo-corp.com/uploads/medium2x/d2/5d/b975d4acdd6e7607773778a6d8e6.jpg" alt="PET-AMB" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0a1628"/><path d="M40 88 Q80 28 120 88" stroke="#60a5fa" stroke-width="8" fill="none"/><circle cx="58" cy="66" r="8" fill="#60a5fa"/><circle cx="102" cy="66" r="8" fill="#60a5fa"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">PET-AMB · 2020</div></div>
-              <div class="gallery-item" style="background:#0d2137"><img src="https://pic.mieloo-corp.com/uploads/medium/a3/27/905f4600d5300e256416f56b26e2.jpg" alt="U-DOC" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d2137"/><rect x="28" y="36" width="104" height="60" rx="10" fill="#0ea5e9" opacity="0.7"/><rect x="44" y="54" width="72" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">U-DOC · 2020</div></div>
-              <div class="gallery-item" style="background:#1c1c1e"><img src="https://pic.mieloo-corp.com/uploads/medium/92/52/64866e13093fcc28493ddee66170.jpg" alt="AR Mermaid" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1c1c1e"/><circle cx="80" cy="55" r="30" fill="#34d399" opacity="0.85"/><rect x="46" y="90" width="68" height="10" rx="5" fill="#fff" opacity="0.7"/></svg><div class="gallery-skill">Motion · UI</div><div class="gallery-item-label">AR Mermaid · 2020</div></div>
-              <div class="gallery-item" style="background:#0c1e14"><img src="https://pic.mieloo-corp.com/uploads/medium2x/8f/71/fcfe92f0c5ee1ea5633e0a4ed827.jpg" alt="蒔光縮影" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0c1e14"/><ellipse cx="80" cy="56" rx="48" ry="32" fill="#22c55e" opacity="0.75"/><rect x="52" y="80" width="56" height="16" rx="8" fill="#bbf7d0" opacity="0.9"/></svg><div class="gallery-item-label">蒔光縮影 · 2020</div></div>
-              <div class="gallery-item" style="background:#0d1f10"><img src="https://pic.mieloo-corp.com/uploads/medium2x/3c/0f/234cfef220cac3f096a02098473c.jpg" alt="Free-Walk" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1f10"/><rect x="28" y="44" width="104" height="44" rx="22" fill="#16a34a" opacity="0.8"/><circle cx="56" cy="88" r="12" fill="#14532d"/><circle cx="104" cy="88" r="12" fill="#14532d"/></svg><div class="gallery-item-label">Free-Walk · 2020</div></div>
-              <div class="gallery-item" style="background:#1a1428"><img src="https://pic.mieloo-corp.com/uploads/original/5e/88/5006a50fb71346175b6557e1f5dc.jpg" alt="小韚" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1428"/><ellipse cx="80" cy="60" rx="42" ry="30" fill="#7c3aed" opacity="0.7"/><circle cx="64" cy="52" r="8" fill="#fff" opacity="0.9"/><circle cx="96" cy="52" r="8" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">小韚 · 2020</div></div>
-              <div class="gallery-item" style="background:#141c10"><img src="https://pic.mieloo-corp.com/uploads/medium2x/c3/24/14febf6be415f28013c32cddbf61.jpg" alt="Catch-Hue" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#141c10"/><circle cx="52" cy="55" r="26" fill="#4ade80" opacity="0.8"/><circle cx="88" cy="55" r="26" fill="#fbbf24" opacity="0.8"/><circle cx="70" cy="75" r="26" fill="#f87171" opacity="0.8"/></svg><div class="gallery-item-label">Catch-Hue · 2020</div></div>
+              <div class="gallery-item" style="background:#1d1d1f"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/b9/ce/579cbd9ccfc71a468cc0951dee2e.jpg" alt="C-Drive" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><circle cx="64" cy="60" r="28" fill="#ff6b35" opacity="0.85"/><rect x="96" y="36" width="42" height="54" rx="6" fill="#f5f5f7" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">C-Drive · 2020</div></div>
+              <div class="gallery-item" style="background:#0a1628"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/d2/5d/b975d4acdd6e7607773778a6d8e6.jpg" alt="PET-AMB" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0a1628"/><path d="M40 88 Q80 28 120 88" stroke="#60a5fa" stroke-width="8" fill="none"/><circle cx="58" cy="66" r="8" fill="#60a5fa"/><circle cx="102" cy="66" r="8" fill="#60a5fa"/></svg><div class="gallery-skill">Motion</div><div class="gallery-item-label">PET-AMB · 2020</div></div>
+              <div class="gallery-item" style="background:#0d2137"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/a3/27/905f4600d5300e256416f56b26e2.jpg" alt="U-DOC" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d2137"/><rect x="28" y="36" width="104" height="60" rx="10" fill="#0ea5e9" opacity="0.7"/><rect x="44" y="54" width="72" height="8" rx="4" fill="#fff" opacity="0.9"/></svg><div class="gallery-skill">UI</div><div class="gallery-item-label">U-DOC · 2020</div></div>
+              <div class="gallery-item" style="background:#1c1c1e"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/92/52/64866e13093fcc28493ddee66170.jpg" alt="AR Mermaid" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1c1c1e"/><circle cx="80" cy="55" r="30" fill="#34d399" opacity="0.85"/><rect x="46" y="90" width="68" height="10" rx="5" fill="#fff" opacity="0.7"/></svg><div class="gallery-skill">Motion · UI</div><div class="gallery-item-label">AR Mermaid · 2020</div></div>
+              <div class="gallery-item" style="background:#0c1e14"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/8f/71/fcfe92f0c5ee1ea5633e0a4ed827.jpg" alt="蒔光縮影" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0c1e14"/><ellipse cx="80" cy="56" rx="48" ry="32" fill="#22c55e" opacity="0.75"/><rect x="52" y="80" width="56" height="16" rx="8" fill="#bbf7d0" opacity="0.9"/></svg><div class="gallery-item-label">蒔光縮影 · 2020</div></div>
+              <div class="gallery-item" style="background:#0d1f10"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/3c/0f/234cfef220cac3f096a02098473c.jpg" alt="Free-Walk" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d1f10"/><rect x="28" y="44" width="104" height="44" rx="22" fill="#16a34a" opacity="0.8"/><circle cx="56" cy="88" r="12" fill="#14532d"/><circle cx="104" cy="88" r="12" fill="#14532d"/></svg><div class="gallery-item-label">Free-Walk · 2020</div></div>
+              <div class="gallery-item" style="background:#1a1428"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/5e/88/5006a50fb71346175b6557e1f5dc.jpg" alt="小韚" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1428"/><ellipse cx="80" cy="60" rx="42" ry="30" fill="#7c3aed" opacity="0.7"/><circle cx="64" cy="52" r="8" fill="#fff" opacity="0.9"/><circle cx="96" cy="52" r="8" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">小韚 · 2020</div></div>
+              <div class="gallery-item" style="background:#141c10"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/c3/24/14febf6be415f28013c32cddbf61.jpg" alt="Catch-Hue" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#141c10"/><circle cx="52" cy="55" r="26" fill="#4ade80" opacity="0.8"/><circle cx="88" cy="55" r="26" fill="#fbbf24" opacity="0.8"/><circle cx="70" cy="75" r="26" fill="#f87171" opacity="0.8"/></svg><div class="gallery-item-label">Catch-Hue · 2020</div></div>
               <!-- 2019 -->
-              <div class="gallery-item" style="background:#0f1923"><img src="https://pic.mieloo-corp.com/uploads/medium2x/29/ed/d2894bcc26263f22e9343b7c30ff.jpg" alt="GOGOAL" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0f1923"/><polygon points="80,22 130,90 30,90" fill="#f59e0b" opacity="0.85"/><circle cx="80" cy="70" r="10" fill="#fff"/></svg><div class="gallery-item-label">GOGOAL · 2019</div></div>
-              <div class="gallery-item" style="background:#1a0f2e"><img src="https://pic.mieloo-corp.com/uploads/medium/ab/58/15f9ecf858f414bf0dcdbefa9008.jpg" alt="Mount+Aid" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a0f2e"/><circle cx="80" cy="58" r="32" fill="#c084fc" opacity="0.8"/><path d="M64 52 Q80 40 96 52 Q96 72 80 80 Q64 72 64 52 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Mount+Aid · 2019</div></div>
-              <div class="gallery-item" style="background:#0d2318"><img src="https://pic.mieloo-corp.com/uploads/original/fb/ac/ac67b7d725db7223008a598f668b.jpg" alt="Panacea" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d2318"/><circle cx="56" cy="60" r="26" fill="#4ade80" opacity="0.8"/><circle cx="104" cy="60" r="26" fill="#22d3ee" opacity="0.8"/></svg><div class="gallery-item-label">Panacea · 2019</div></div>
-              <div class="gallery-item" style="background:#0e1e28"><img src="https://pic.mieloo-corp.com/uploads/medium/ab/29/a3cf505ed0fc9fab8ec782dc74bf.jpg" alt="圍碗" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1e28"/><ellipse cx="80" cy="68" rx="50" ry="30" fill="#0ea5e9" opacity="0.75"/><ellipse cx="80" cy="62" rx="40" ry="22" fill="#38bdf8" opacity="0.5"/></svg><div class="gallery-item-label">圍碗 · 2019</div></div>
-              <div class="gallery-item" style="background:#1a1010"><img src="https://pic.mieloo-corp.com/uploads/medium/52/31/bdc1d118dea58c48ce05ee53337a.jpg" alt="Lighting Attack" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1010"/><path d="M80 22 L56 62 L74 62 L50 98 L104 52 L82 52 Z" fill="#fbbf24" opacity="0.9"/></svg><div class="gallery-item-label">Lighting Attack · 2019</div></div>
+              <div class="gallery-item" style="background:#0f1923"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/29/ed/d2894bcc26263f22e9343b7c30ff.jpg" alt="GOGOAL" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0f1923"/><polygon points="80,22 130,90 30,90" fill="#f59e0b" opacity="0.85"/><circle cx="80" cy="70" r="10" fill="#fff"/></svg><div class="gallery-item-label">GOGOAL · 2019</div></div>
+              <div class="gallery-item" style="background:#1a0f2e"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/ab/58/15f9ecf858f414bf0dcdbefa9008.jpg" alt="Mount+Aid" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a0f2e"/><circle cx="80" cy="58" r="32" fill="#c084fc" opacity="0.8"/><path d="M64 52 Q80 40 96 52 Q96 72 80 80 Q64 72 64 52 Z" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Mount+Aid · 2019</div></div>
+              <div class="gallery-item" style="background:#0d2318"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/fb/ac/ac67b7d725db7223008a598f668b.jpg" alt="Panacea" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0d2318"/><circle cx="56" cy="60" r="26" fill="#4ade80" opacity="0.8"/><circle cx="104" cy="60" r="26" fill="#22d3ee" opacity="0.8"/></svg><div class="gallery-item-label">Panacea · 2019</div></div>
+              <div class="gallery-item" style="background:#0e1e28"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/ab/29/a3cf505ed0fc9fab8ec782dc74bf.jpg" alt="圍碗" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1e28"/><ellipse cx="80" cy="68" rx="50" ry="30" fill="#0ea5e9" opacity="0.75"/><ellipse cx="80" cy="62" rx="40" ry="22" fill="#38bdf8" opacity="0.5"/></svg><div class="gallery-item-label">圍碗 · 2019</div></div>
+              <div class="gallery-item" style="background:#1a1010"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/52/31/bdc1d118dea58c48ce05ee53337a.jpg" alt="Lighting Attack" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1010"/><path d="M80 22 L56 62 L74 62 L50 98 L104 52 L82 52 Z" fill="#fbbf24" opacity="0.9"/></svg><div class="gallery-item-label">Lighting Attack · 2019</div></div>
               <!-- 2018 -->
-              <div class="gallery-item" style="background:#f0ead2"><img src="https://pic.mieloo-corp.com/uploads/medium/0b/dd/a62f5d9be31a32292b51fcee82df.jpg" alt="採茶 bántê" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f0ead2"/><path d="M80 22 C44 52, 44 82, 80 105 C116 82, 116 52, 80 22 Z" fill="#588157"/></svg><div class="gallery-item-label">採茶 bántê · 2018</div></div>
-              <div class="gallery-item" style="background:#1a1428"><img src="https://pic.mieloo-corp.com/uploads/original/3d/94/53e0bd082ba1e51c3f4bfe645acd.jpg" alt="Finguide II" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1428"/><rect x="28" y="36" width="104" height="60" rx="8" fill="#7c3aed" opacity="0.7"/><circle cx="58" cy="66" r="14" fill="#fff" opacity="0.9"/><circle cx="102" cy="66" r="14" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Finguide II · 2018</div></div>
-              <div class="gallery-item" style="background:#0e2318"><img src="https://pic.mieloo-corp.com/uploads/medium2x/4c/af/87c2edd2c847bead9d7cd0fd0212.jpg" alt="動物大探奇" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e2318"/><path d="M50 30 L80 80 L110 30 Z" fill="#16a34a" opacity="0.8"/><rect x="40" y="84" width="80" height="14" rx="7" fill="#f0fdf4" opacity="0.9"/></svg><div class="gallery-item-label">動物大探奇 · 2018</div></div>
+              <div class="gallery-item" style="background:#f0ead2"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/0b/dd/a62f5d9be31a32292b51fcee82df.jpg" alt="採茶 bántê" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#f0ead2"/><path d="M80 22 C44 52, 44 82, 80 105 C116 82, 116 52, 80 22 Z" fill="#588157"/></svg><div class="gallery-item-label">採茶 bántê · 2018</div></div>
+              <div class="gallery-item" style="background:#1a1428"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/3d/94/53e0bd082ba1e51c3f4bfe645acd.jpg" alt="Finguide II" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1a1428"/><rect x="28" y="36" width="104" height="60" rx="8" fill="#7c3aed" opacity="0.7"/><circle cx="58" cy="66" r="14" fill="#fff" opacity="0.9"/><circle cx="102" cy="66" r="14" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Finguide II · 2018</div></div>
+              <div class="gallery-item" style="background:#0e2318"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/4c/af/87c2edd2c847bead9d7cd0fd0212.jpg" alt="動物大探奇" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e2318"/><path d="M50 30 L80 80 L110 30 Z" fill="#16a34a" opacity="0.8"/><rect x="40" y="84" width="80" height="14" rx="7" fill="#f0fdf4" opacity="0.9"/></svg><div class="gallery-item-label">動物大探奇 · 2018</div></div>
 
               <!-- 2017 -->
-              <div class="gallery-item" style="background:#1d1d1f"><img src="https://pic.mieloo-corp.com/uploads/medium/31/b2/3066f9f46e16b6fc385b6a8eae2c.jpg" alt="Promider" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><rect x="28" y="38" width="104" height="54" rx="6" fill="#d97706" opacity="0.8"/><circle cx="58" cy="65" r="14" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Promider · 2017</div></div>
-              <div class="gallery-item" style="background:#0e1428"><img src="https://pic.mieloo-corp.com/uploads/original/63/b3/6bbd20d854832bd652a4faaf91b4.jpg" alt="AQUAIR" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1428"/><circle cx="80" cy="55" r="34" fill="#3b82f6" opacity="0.75"/><rect x="54" y="44" width="52" height="22" rx="5" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">AQUAIR · 2017</div></div>
+              <div class="gallery-item" style="background:#1d1d1f"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/31/b2/3066f9f46e16b6fc385b6a8eae2c.jpg" alt="Promider" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#1d1d1f"/><rect x="28" y="38" width="104" height="54" rx="6" fill="#d97706" opacity="0.8"/><circle cx="58" cy="65" r="14" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">Promider · 2017</div></div>
+              <div class="gallery-item" style="background:#0e1428"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/63/b3/6bbd20d854832bd652a4faaf91b4.jpg" alt="AQUAIR" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"><svg viewBox="0 0 160 120" style="position:absolute;inset:0;width:100%;height:100%;"><rect width="160" height="120" fill="#0e1428"/><circle cx="80" cy="55" r="34" fill="#3b82f6" opacity="0.75"/><rect x="54" y="44" width="52" height="22" rx="5" fill="#fff" opacity="0.9"/></svg><div class="gallery-item-label">AQUAIR · 2017</div></div>
 
             </div>
           </div>
@@ -1976,7 +2101,7 @@ img.img-placeholder {
               <!-- left: big number -->
               <div style="padding-right:24px;border-right:0.5px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;justify-content:center;">
                 <div class="m-label-dk">Cumulative Awards Won</div>
-                <div class="m-big-dk">223<span style="font-size:0.48em;opacity:0.6">+</span></div>
+                <div class="m-big-dk">224<span style="font-size:0.48em;opacity:0.6">+</span></div>
               </div>
               <!-- right: pills 3×2 -->
               <div style="padding-left:24px;display:flex;flex-wrap:wrap;gap:8px;align-content:center;align-self:center;">
@@ -1992,20 +2117,20 @@ img.img-placeholder {
         </div>
 
         <div class="ac-carousel-root" id="acRoot">
-          <div class="ac-arrow left"  id="acArrowL"><div class="ac-arrow-icon">←</div></div>
-          <div class="ac-arrow right" id="acArrowR"><div class="ac-arrow-icon">→</div></div>
+          <button class="ac-arrow left"  id="acArrowL" type="button" aria-label="上一個作品 Previous"><div class="ac-arrow-icon">←</div></button>
+          <button class="ac-arrow right" id="acArrowR" type="button" aria-label="下一個作品 Next"><div class="ac-arrow-icon">→</div></button>
           <div class="ac-track-outer" id="acOuter">
             <div class="ac-track" id="acTrack">
-              <button class="ac-card" aria-label="DWB Dental"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#0a2540;"><img src="https://pic.mieloo-corp.com/uploads/medium2x/11/5e/7e7f50a844725174d5d318760f84.jpg" alt="DWB Dental" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">DWB Dental</div><div class="proj-en">Modular Mobile Dental</div><div class="proj-badges"><div class="proj-badge-dk">IDEA Finalist</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Go Walk"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#1d1d1f;"><img src="https://pic.mieloo-corp.com/uploads/medium/04/27/c9de301c21705ca04a979853a445.jpg" alt="Go Walk" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Go Walk</div><div class="proj-en">Assistive Walker</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(215,36,36,0.12);color:rgba(255,100,100,0.85);border-color:rgba(215,36,36,0.2);">Reddot Award</div><div class="proj-badge-dk" style="background:rgba(80,180,80,0.12);color:rgba(120,220,120,0.85);border-color:rgba(80,180,80,0.2);">IDEA Bronze</div></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="JoinT"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#0c1a2e;"><img src="https://pic.mieloo-corp.com/uploads/original/3a/ea/103abaa737656b0cedb7a37b58d1.jpg" alt="JoinT" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">JoinT</div><div class="proj-en">Smart Home Fitness</div><div class="proj-badges"><div class="proj-badge-dk">IDEA Finalist</div><span class="proj-badge-skill">UI</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Nature Guardian"><div class="proj-year-dk">2025</div><div class="proj-art" style="background:#0d2b1a;"><img src="https://pic.mieloo-corp.com/uploads/original/7c/73/bc044bfed90cdd1d2ac32f949ad0.jpg" alt="Nature Guardian" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Nature Guardian</div><div class="proj-en">臺灣黑熊保育</div><div class="proj-badges"><div class="proj-badge-dk">IDA Honorable Mention</div></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="PET-AMB"><div class="proj-year-dk">2020</div><div class="proj-art" style="background:#1d1d1f;"><img src="https://pic.mieloo-corp.com/uploads/medium2x/d2/5d/b975d4acdd6e7607773778a6d8e6.jpg" alt="PET-AMB" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">PET-AMB</div><div class="proj-en">Pet Ambulance</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(130,80,230,0.12);color:rgba(180,150,255,0.85);border-color:rgba(130,80,230,0.2);">iF Talent Winner</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Tunnel Keeper"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#1a0a06;"><img src="https://pic.mieloo-corp.com/uploads/original/0e/43/f2dc3fdbd1590ad22d0484fa7f3c.jpg" alt="Tunnel Keeper" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Tunnel Keeper</div><div class="proj-en">Tunnel Emergency System</div><div class="proj-badges"><div class="proj-badge-dk">Reddot · Core77 · 金點</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Worcamper"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#0e1f18;"><img src="https://pic.mieloo-corp.com/uploads/medium/f5/c0/412dd473c183f2b80d909f51156e.jpg" alt="Worcamper" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Worcamper</div><div class="proj-en">Mobile Work Camper</div><div class="proj-badges"><div class="proj-badge-dk">Kymco 銀獎</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Y.Our 拼車友" id="acOpenGallery1"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#142838;"><img src="https://pic.mieloo-corp.com/uploads/medium/eb/a9/65aee5b496b076bde95ffb88085e.jpg" alt="Y.Our 拼車友" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Y.Our 拼車友</div><div class="proj-en">Shared Scooter System</div><div class="proj-badges"><div class="proj-badge-dk">Kymco 銅獎</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="Cookidlike"><div class="proj-year-dk">2022</div><div class="proj-art" style="background:#1a2e10;"><img src="https://pic.mieloo-corp.com/uploads/medium/b8/a2/01b4e6753c299656f629e9551a5a.jpg" alt="Cookidlike" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Cookidlike</div><div class="proj-en">Cooking Learning Kit</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(80,180,80,0.12);color:rgba(120,220,120,0.85);border-color:rgba(80,180,80,0.2);">IDEA Bronze</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
-              <button class="ac-card" aria-label="AQUAIR"><div class="proj-year-dk">2017</div><div class="proj-art" style="background:#0a1628;"><img src="https://pic.mieloo-corp.com/uploads/original/63/b3/6bbd20d854832bd652a4faaf91b4.jpg" alt="AQUAIR" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">AQUAIR</div><div class="proj-en">山中引霧汲水器</div><div class="proj-badges"><div class="proj-badge-dk">德國百靈設計獎 第一名</div></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="DWB Dental"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#0a2540;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/11/5e/7e7f50a844725174d5d318760f84.jpg" alt="DWB Dental" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">DWB Dental</div><div class="proj-en">Modular Mobile Dental</div><div class="proj-badges"><div class="proj-badge-dk">IDEA Finalist</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Go Walk"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#1d1d1f;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/04/27/c9de301c21705ca04a979853a445.jpg" alt="Go Walk" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Go Walk</div><div class="proj-en">Assistive Walker</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(215,36,36,0.12);color:rgba(255,100,100,0.85);border-color:rgba(215,36,36,0.2);">Reddot Award</div><div class="proj-badge-dk" style="background:rgba(80,180,80,0.12);color:rgba(120,220,120,0.85);border-color:rgba(80,180,80,0.2);">IDEA Bronze</div></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="JoinT"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#0c1a2e;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/3a/ea/103abaa737656b0cedb7a37b58d1.jpg" alt="JoinT" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">JoinT</div><div class="proj-en">Smart Home Fitness</div><div class="proj-badges"><div class="proj-badge-dk">IDEA Finalist</div><span class="proj-badge-skill">UI</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Nature Guardian"><div class="proj-year-dk">2025</div><div class="proj-art" style="background:#0d2b1a;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/7c/73/bc044bfed90cdd1d2ac32f949ad0.jpg" alt="Nature Guardian" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Nature Guardian</div><div class="proj-en">臺灣黑熊保育</div><div class="proj-badges"><div class="proj-badge-dk">IDA Honorable Mention</div></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="PET-AMB"><div class="proj-year-dk">2020</div><div class="proj-art" style="background:#1d1d1f;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium2x/d2/5d/b975d4acdd6e7607773778a6d8e6.jpg" alt="PET-AMB" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">PET-AMB</div><div class="proj-en">Pet Ambulance</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(130,80,230,0.12);color:rgba(180,150,255,0.85);border-color:rgba(130,80,230,0.2);">iF Talent Winner</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Tunnel Keeper"><div class="proj-year-dk">2021</div><div class="proj-art" style="background:#1a0a06;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/0e/43/f2dc3fdbd1590ad22d0484fa7f3c.jpg" alt="Tunnel Keeper" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Tunnel Keeper</div><div class="proj-en">Tunnel Emergency System</div><div class="proj-badges"><div class="proj-badge-dk">Reddot · Core77 · 金點</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Worcamper"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#0e1f18;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/f5/c0/412dd473c183f2b80d909f51156e.jpg" alt="Worcamper" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Worcamper</div><div class="proj-en">Mobile Work Camper</div><div class="proj-badges"><div class="proj-badge-dk">Kymco 銀獎</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Y.Our 拼車友" id="acOpenGallery1"><div class="proj-year-dk">2023</div><div class="proj-art" style="background:#142838;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/eb/a9/65aee5b496b076bde95ffb88085e.jpg" alt="Y.Our 拼車友" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Y.Our 拼車友</div><div class="proj-en">Shared Scooter System</div><div class="proj-badges"><div class="proj-badge-dk">Kymco 銅獎</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="Cookidlike"><div class="proj-year-dk">2022</div><div class="proj-art" style="background:#1a2e10;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/medium/b8/a2/01b4e6753c299656f629e9551a5a.jpg" alt="Cookidlike" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">Cookidlike</div><div class="proj-en">Cooking Learning Kit</div><div class="proj-badges"><div class="proj-badge-dk" style="background:rgba(80,180,80,0.12);color:rgba(120,220,120,0.85);border-color:rgba(80,180,80,0.2);">IDEA Bronze</div><span class="proj-badge-skill">Motion</span></div><span class="proj-arrow">↗</span></button>
+              <button class="ac-card" aria-label="AQUAIR"><div class="proj-year-dk">2017</div><div class="proj-art" style="background:#0a1628;"><img loading="lazy" decoding="async" src="https://pic.mieloo-corp.com/uploads/original/63/b3/6bbd20d854832bd652a4faaf91b4.jpg" alt="AQUAIR" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="proj-zh">AQUAIR</div><div class="proj-en">山中引霧汲水器</div><div class="proj-badges"><div class="proj-badge-dk">德國百靈設計獎 第一名</div></div><span class="proj-arrow">↗</span></button>
             </div>
           </div>
           <div class="ac-progress"><div class="ac-progress-fill" id="acProg"></div></div>
@@ -2025,7 +2150,9 @@ img.img-placeholder {
 
           <!-- FEATURED LIST -->
           <div class="ab-list" data-aw-pane="featured">
-            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">Drip Drop Dragon-Interactive Child Safe IV Stand</span><span class="aw-pl idea">IDEA Finalist</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">Drip Drop Dragon-Interactive Child Safe IV Stand</span><span class="aw-pl idea">IDEA Bronze Award</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">I Care - Comfort NG Tube Feeding system</span><span class="aw-pl reddot">Reddot Winner</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">Nexloop</span><span class="aw-pl reddot">Reddot Winner</span></div>
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">Guardian Shell-The AI Coach for Kid Earthquake Safety</span><span class="aw-pl idea">IDEA Finalist</span></div>
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">I Care - Comfort NG Tube Feeding system</span><span class="aw-pl idea">IDEA Finalist</span></div>
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-nm">KidTech Wonder Box AI Interactive Learning Device</span><span class="aw-pl idea">IDEA Finalist</span></div>
@@ -2066,6 +2193,9 @@ img.img-placeholder {
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">iF Talent</span><span class="aw-nm">I Care - Comfort NG Tube Feeding system</span></span><span class="aw-pl if">Shortlist</span></div>
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">育秀盃 工業設計類</span><span class="aw-nm">滴滴龍-互動式幼兒安全點滴座</span></span><span class="aw-pl">佳作</span></div>
             <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">第21屆數位訊號處理創思設計競賽</span><span class="aw-nm">滴滴龍-互動式幼兒安全點滴座</span></span><span class="aw-pl">佳作</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">全國技專院校學生實務專題製作競賽</span><span class="aw-nm">滴滴龍-互動式幼兒安全點滴座</span></span><span class="aw-pl">第一名</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">Reddot Concept</span><span class="aw-nm">I Care - Comfort NG Tube Feeding system</span></span><span class="aw-pl reddot">Winner</span></div>
+            <div class="aw-row"><span class="aw-yr">2026</span><span class="aw-mid"><span class="aw-cm">Reddot Concept</span><span class="aw-nm">Nexloop</span></span><span class="aw-pl reddot">Winner</span></div>
 
             <!-- 2025 -->
             <div class="aw-yr-tag">2025</div>
@@ -2501,15 +2631,15 @@ img.img-placeholder {
     <div class="stats-grid">
       <div class="stat-tile hero-stat reveal" style="grid-column: span 7;">
         <div class="label">Student awards mentored</div>
-        <div class="num"><span data-count="223">0</span><span class="plus">+</span></div>
-        <div class="desc">Cumulative wins at Reddot, iF Talent, IDEA, IDA, Golden Pin, ACDA &amp; national competitions, 2016–2026. A further 274 finalist entries (2016–2026).</div>
-        <div class="progress"><span>Wins</span><div class="bar"><i data-w="78%"></i></div><span>vs short-lists 274</span></div>
+        <div class="num"><span data-count="224">0</span><span class="plus">+</span></div>
+        <div class="desc">Cumulative wins at Reddot, iF Talent, IDEA, IDA, Golden Pin, ACDA &amp; national competitions, 2016–2026.</div>
+        <div class="progress"><span>Wins</span><div class="bar"><i data-w="78%"></i></div><span>2016–2026</span></div>
       </div>
 
       <div class="stat-tile reveal" style="grid-column: span 5;">
         <div class="label">Crowdfunding campaigns funded</div>
         <div class="num"><span data-count="19">0</span><span class="unit"> / 19</span></div>
-        <div class="desc">Every HUROYAMA campaign hit goal. Across <b>6 platforms</b> in 4 countries — zeczec, Kickstarter, Makuake, Camp‑fire, Wadiz, GreenFunding. Total raised: NT$ 21M+.</div>
+        <div class="desc">Every HUROYAMA campaign hit goal. Across <b>6 platforms</b> in 4 countries — zeczec, Kickstarter, Makuake, Camp‑fire, Wadiz, GreenFunding. Total raised: NT$ 2,100萬+.</div>
         <div class="progress"><span>Goal · 100%</span><div class="bar"><i data-w="100%"></i></div><span>19 / 19 funded</span></div>
       </div>
 
@@ -2532,21 +2662,26 @@ img.img-placeholder {
         <div class="desc">Design, utility &amp; invention — Taiwan &amp; USA. See <a href="#portfolio" style="color:#0a84ff;text-decoration:none;">Portfolio · Granted Patents</a> shelf.</div>
       </div>
 
-      <div class="stat-tile reveal" style="grid-column: span 3;">
-        <div class="label">Years on faculty</div>
-        <div class="num"><span data-count="10">0</span></div>
-      </div>
-      <div class="stat-tile reveal" style="grid-column: span 3;">
-        <div class="label">Funded projects</div>
-        <div class="num"><span data-count="34">0</span></div>
-      </div>
-      <div class="stat-tile reveal" style="grid-column: span 3;">
-        <div class="label">Published papers</div>
-        <div class="num"><span data-count="17">0</span><span class="plus">+</span></div>
-      </div>
-      <div class="stat-tile reveal" style="grid-column: span 3;">
-        <div class="label">IEEE Best Paper</div>
-        <div class="num"><span data-count="1">0</span></div>
+      <div class="stat-tile stat-academic reveal" style="grid-column: span 12;">
+        <div class="label">Academic record · 學術成果</div>
+        <div class="academic-row">
+          <div class="ac-metric">
+            <div class="num"><span data-count="10">0</span></div>
+            <div class="ac-lbl">Years on faculty</div>
+          </div>
+          <div class="ac-metric">
+            <div class="num"><span data-count="34">0</span></div>
+            <div class="ac-lbl">Funded projects</div>
+          </div>
+          <div class="ac-metric">
+            <div class="num"><span data-count="17">0</span><span class="plus">+</span></div>
+            <div class="ac-lbl">Published papers</div>
+          </div>
+          <div class="ac-metric">
+            <div class="num"><span data-count="1">0</span></div>
+            <div class="ac-lbl">IEEE Best Paper · 2017</div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -2618,7 +2753,7 @@ img.img-placeholder {
   <p class="m-sub">畚箕造型抗菌馬桶刷，一次解決清潔與收納。矽膠材質、銀離子抑菌，金點設計標章肯定。</p>
   <div class="m-stats">
     <div><b>5,561</b><span>Backers · 5 campaigns</span></div>
-    <div><b>NT$ 8.6M</b><span>募資金額</span></div>
+    <div><b>NT$ 860萬</b><span>募資金額</span></div>
     <div><b>15,000+</b><span>全球出貨量</span></div>
   </div>
   <ul class="m-list">
@@ -2645,7 +2780,7 @@ img.img-placeholder {
   <p class="m-sub">山形矽膠排水口集髮器，三種尺寸一次滿足。品牌首發作品，全球超過萬人支持，金點設計標章。</p>
   <div class="m-stats">
     <div><b>12,898</b><span>Backers · 8 campaigns</span></div>
-    <div><b>NT$ 8.6M</b><span>募資金額（M＋S/L 合計）</span></div>
+    <div><b>NT$ 860萬</b><span>募資金額（M＋S/L 合計）</span></div>
     <div><b>S · M · L</b><span>三種尺寸</span></div>
   </div>
   <ul class="m-list">
@@ -2678,7 +2813,7 @@ img.img-placeholder {
   <p class="m-sub">輕量可折疊戶外坐墊，一扣成形、不佔空間。幾何格紋美學，金點設計標章。</p>
   <div class="m-stats">
     <div><b>717</b><span>Backers · 3 campaigns</span></div>
-    <div><b>NT$ 1.08M</b><span>募資金額</span></div>
+    <div><b>NT$ 108萬</b><span>募資金額</span></div>
     <div><b>395%</b><span>噴噴達成率</span></div>
   </div>
   <ul class="m-list">
@@ -2723,7 +2858,7 @@ img.img-placeholder {
   <p class="m-sub">刮水＋接水一體設計，專利結構邊刮邊接、不留水痕。快拆清洗，銀離子抑菌，浴室清潔全面升級。</p>
   <div class="m-stats">
     <div><b>2,244</b><span>Backers · 3 campaigns</span></div>
-    <div><b>NT$ 2.68M</b><span>募資金額</span></div>
+    <div><b>NT$ 268萬</b><span>募資金額</span></div>
     <div><b>2 項</b><span>核准專利</span></div>
   </div>
   <ul class="m-list">
@@ -2802,7 +2937,7 @@ img.img-placeholder {
 <template id="tpl-personal-awards">
   <div class="m-eyebrow">PERSONAL ACHIEVEMENT · 個人獲獎</div>
   <h3 class="m-title">Personal Awards <span class="grey">&amp; Recognition</span></h3>
-  <p class="m-sub">Design awards and recognitions held personally — distinct from the 223+ student mentoring wins.</p>
+  <p class="m-sub">Design awards and recognitions held personally — distinct from the 224+ student mentoring wins.</p>
 
   <div class="m-section-title">品牌設計獎項 · Brand &amp; Product Awards</div>
   <ul class="m-list">
@@ -2868,7 +3003,7 @@ img.img-placeholder {
   <p class="m-sub">南臺科技大學助理教授，2016 年至今。指導 Ya-Lin Chen Studio 穩定榮獲 Reddot、iF、IDEA、Golden Pin 等一線國際設計獎殊榮，同時擔任企業培訓講師、公部門審查委員與跨域人才培育者。</p>
 
   <div class="m-stats">
-    <div><b>223+</b><span>學生獲獎 · 2016–2026</span></div>
+    <div><b>224+</b><span>學生獲獎 · 2016–2026</span></div>
     <div><b>14</b><span>門課 · 基礎至畢設</span></div>
     <div><b>4</b><span>大多元角色</span></div>
   </div>
@@ -2879,9 +3014,9 @@ img.img-placeholder {
   <div class="m-section-title">重點競賽獲獎統計（指導學生）</div>
   <ul class="m-list">
     <li><b>Stanford Center on Longevity Design Challenge · 史丹福銀髮設計競賽</b> — JoWalk · 亞洲區唯一入圍全球決賽</li>
-    <li><b>Reddot Concept</b> — Winner ×3 · 入圍（複賽）×8</li>
+    <li><b>Reddot Concept</b> — Winner ×5 · 入圍（複賽）×8</li>
     <li><b>iF Design Talent Award</b> — Winner ×2 · Shortlist ×5 · Design Excellence ×1</li>
-    <li><b>IDEA（美國傑出工業設計獎）</b> — Bronze ×3 · Silver ×1 · Finalist ×9</li>
+    <li><b>IDEA（美國傑出工業設計獎）</b> — Bronze ×4 · Silver ×1 · Finalist ×9</li>
     <li><b>Kymco 光陽設計挑戰盃</b> — 金 ×1 · 銀 ×5 · 銅 ×5 · 佳作 ×4</li>
     <li><b>金點設計獎</b> — 金點新秀設計獎 · 金點概念設計標章 · 年度最佳設計獎 共 5 件</li>
     <li><b>IDA International Design Awards</b> — Bronze ×1 · Honorable Mention ×2（2025）</li>
@@ -2921,7 +3056,7 @@ img.img-placeholder {
   <p class="m-sub">米鹿設計（Mieloo Design）共同創辦人，居家品牌 <b>HUROYAMA 浴山</b> 主理人。從設計概念到量產上市、從臺灣市場到 70 國出貨，兼具品牌經營、產學合作與知識產權實務。</p>
 
   <div class="m-stats">
-    <div><b>NT$ 21M+</b><span>raised · 19 campaigns</span></div>
+    <div><b>NT$ 2,100萬+</b><span>raised · 19 campaigns</span></div>
     <div><b>21,420</b><span>backers globally</span></div>
     <div><b>70+</b><span>countries shipped</span></div>
   </div>
@@ -2949,7 +3084,7 @@ img.img-placeholder {
   <ul class="m-list">
     <li><b>37 件核准專利</b> — 設計 21 件 · 新型 10 件 · 發明 6 件 · 美國發明 1 件（2013–2026）</li>
     <li><b>產學合作計畫 34 案</b> — MOST · STUST 產學專案 · ITRI 委託計畫</li>
-    <li><b>群眾募資 19 / 19 全數達標</b> — NT$ 21M+ · 6 平台 · 4 國（TW · US · JP · KR）</li>
+    <li><b>群眾募資 19 / 19 全數達標</b> — NT$ 2,100萬+ · 6 平台 · 4 國（TW · US · JP · KR）</li>
     <li><b>iF Design Award Winner · 2021</b> — 產品設計類（浴山 Hair Catcher）</li>
     <li><b>金點設計標章 ×4</b> — 浴山 · 好摺墊 · 潔癖刷 · 立體革名片夾（2018–2022）</li>
     <li><b>2023 總統府工藝品展覽「島嶼公益、流動風景」</b> — 邀請展出</li>
@@ -3378,9 +3513,16 @@ img.img-placeholder {
 
   labels.forEach(({ el }, i) => {
     el.style.cursor = 'pointer';
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-haspopup', 'dialog');
+    if (!el.getAttribute('aria-label')) el.setAttribute('aria-label', (el.textContent || '社會影響力角色').trim() + ' · 查看詳情');
     el.addEventListener('mouseenter', () => { hovered = i; });
     el.addEventListener('mouseleave', () => { hovered = -1; });
+    el.addEventListener('focus', () => { hovered = i; });
+    el.addEventListener('blur', () => { hovered = -1; });
     el.addEventListener('click', () => openNodeModal(i));
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openNodeModal(i); } });
   });
 
   // ── Resize: recalculate W and nodeXs when stage width changes ──
@@ -3543,9 +3685,10 @@ document.querySelectorAll('.stats, .impact-dark').forEach(section => {
 
 // ─── Pillar stat number roll on card hover ────────────
 document.querySelectorAll('.pillar-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
+  let _rolled = false;
+  const _roll = () => {
     card.querySelectorAll('.pillar-stat .num').forEach(num => {
-      // data-count approach (for complex values like NT$21M+)
+      // data-count approach (for complex values like NT$2,100萬+)
       if (num.dataset.count) {
         const target = parseInt(num.dataset.count);
         const prefix = num.dataset.prefix || '';
@@ -3556,14 +3699,14 @@ document.querySelectorAll('.pillar-card').forEach(card => {
           const p = Math.min((now - t0) / dur, 1);
           const ease = 1 - Math.pow(1 - p, 3);
           const v = Math.round(start + (target - start) * ease);
-          num.textContent = prefix + v + suffix;
+          num.textContent = prefix + v.toLocaleString() + suffix;
           if (p < 1) requestAnimationFrame(tickD);
-          else num.textContent = prefix + target + suffix;
+          else num.textContent = prefix + target.toLocaleString() + suffix;
         }
         requestAnimationFrame(tickD);
         return;
       }
-      // text-based approach for simple values (17+, 223+, etc.)
+      // text-based approach for simple values (17+, 224+, etc.)
       const orig = num.textContent.trim();
       const match = orig.match(/^([\d,]+)/);
       if (!match) return;
@@ -3581,7 +3724,9 @@ document.querySelectorAll('.pillar-card').forEach(card => {
       }
       requestAnimationFrame(tick);
     });
-  });
+  };
+  card.addEventListener('mouseenter', _roll);
+  card.addEventListener('focusin', () => { if (!_rolled) { _rolled = true; _roll(); } });
 });
 
 // ─── Portfolio tab fade-in ────────────────────────────
@@ -3616,10 +3761,12 @@ const io = new IntersectionObserver((entries) => {
       } else {
         e.target.classList.add('in');
       }
+      const _reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       e.target.querySelectorAll('[data-count]').forEach((el, idx) => {
         const target = parseInt(el.dataset.count, 10);
         const suffix = el.dataset.suffix || '';
-        const dur = 1600;
+        const dur = 1200;
+        if (_reduceMotion) { el.textContent = target.toLocaleString() + suffix; return; }
         const delay = e.target.closest('.stats-grid') ? idx * 55 : 0;
         setTimeout(() => {
           const start = performance.now();
@@ -3633,7 +3780,8 @@ const io = new IntersectionObserver((entries) => {
         }, delay);
       });
       e.target.querySelectorAll('.bar > i').forEach(el => {
-        requestAnimationFrame(() => { el.style.width = el.dataset.w; });
+        const frac = (parseFloat(el.dataset.w) || 0) / 100;
+        requestAnimationFrame(() => { el.style.transform = 'scaleX(' + frac + ')'; });
       });
       io.unobserve(e.target);
     }
@@ -3644,8 +3792,9 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 // Portfolio toggle
 const tabs = document.querySelectorAll('.portfolio-head .toggle button');
 tabs.forEach(b => b.addEventListener('click', () => {
-  tabs.forEach(x => x.classList.remove('on'));
+  tabs.forEach(x => { x.classList.remove('on'); x.setAttribute('aria-selected', 'false'); });
   b.classList.add('on');
+  b.setAttribute('aria-selected', 'true');
   const tab = b.dataset.tab;
   document.querySelectorAll('.portfolio-row').forEach(row => {
     const r = row.dataset.row;
@@ -3667,7 +3816,7 @@ awTabs.forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('[data-aw-pane]').forEach(p => {
     p.hidden = (p.dataset.awPane !== aw);
   });
-  const counts = { featured: '29 highlights', all: '223+ entries · scroll for more' };
+  const counts = { featured: '29 highlights', all: '224+ entries · scroll for more' };
   document.getElementById('ab-count').textContent = counts[aw];
 }));
 
@@ -3845,14 +3994,19 @@ patTabs.forEach(b => b.addEventListener('click', () => {
 // Modal system
 const shell = document.getElementById('modalShell');
 const body = document.getElementById('modalBody');
+let _modalLastFocus = null;
 function openModal(key) {
   const tpl = document.getElementById('tpl-' + key);
   if (!tpl) return;
+  _modalLastFocus = document.activeElement;
   body.innerHTML = '';
   body.appendChild(tpl.content.cloneNode(true));
   shell.hidden = false;
   requestAnimationFrame(() => shell.classList.add('in'));
   document.body.style.overflow = 'hidden';
+  // move focus into the dialog for keyboard users
+  const closeBtn = shell.querySelector('.modal-x');
+  if (closeBtn) requestAnimationFrame(() => closeBtn.focus());
   // attach patent filter if present
   const pfs = body.querySelectorAll('.pf');
   if (pfs.length) {
@@ -3870,6 +4024,8 @@ function closeModal() {
   shell.classList.remove('in');
   setTimeout(() => { shell.hidden = true; body.innerHTML = ''; }, 280);
   document.body.style.overflow = '';
+  // return focus to the element that opened the modal
+  if (_modalLastFocus && typeof _modalLastFocus.focus === 'function') { _modalLastFocus.focus(); _modalLastFocus = null; }
 }
 document.addEventListener('click', (e) => {
   const trigger = e.target.closest('[data-modal]');
@@ -3891,10 +4047,10 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
     { lbl:'Character IP',  left:28, top:35, name:'Character IP · Tidy Zoo',   desc:'換換猩球 5 角色 · 動畫主視覺 · 貼圖 · 互動遊戲 · 2024–26' },
     { lbl:'Student Work',  left:80, top:37, name:'Student Concept Projects',  desc:'Reddot · iF Talent · IDEA 指導作品 · 穩定產出國際獎' },
     { lbl:'Product',       left:28, top:65, name:'Product Design',            desc:'iF Winner · 金點 ×4 · 37 件專利 · 5 項商品上市量產' },
-    { lbl:'Crowdfunding',  left:16, top:77, name:'Crowdfunding 募資視覺統籌', desc:'NT$21M+ · 19/19 全數達標 · Kickstarter / Makuake / zeczec' },
+    { lbl:'Crowdfunding',  left:16, top:77, name:'Crowdfunding 募資視覺統籌', desc:'NT$2,100萬+ · 19/19 全數達標 · Kickstarter / Makuake / zeczec' },
     { lbl:'Branding',      left:37, top:80, name:'Branding 品牌識別',         desc:'HUROYAMA · JIREH · 大合新科技等多品牌 Logo 識別系統' },
     { lbl:'Patents',       left:26, top:88, name:'37 件專利',                 desc:'設計 21 · 新型 10 · 發明 6 · 美國 1 · Taiwan & USA' },
-    { lbl:'223 Awards',    left:70, top:66, name:'223 件學生獲獎',            desc:'2016–2026 · Reddot · iF · IDEA · Golden Pin · ACDA' },
+    { lbl:'224 Awards',    left:70, top:66, name:'224 件學生獲獎',            desc:'2016–2026 · Reddot · iF · IDEA · Golden Pin · ACDA' },
     { lbl:'産學合作',       left:80, top:78, name:'産學合作 Industry Collab',  desc:'冷媒錶閥全系列 · 城門椅 · ITRI 車用空氣清淨器 · 醫療輔具' },
   ];
 
@@ -3902,11 +4058,19 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
     tooltip.innerHTML = '<div class="cap-tt-dot"></div><span class="cap-tt-placeholder">hover 任一圓點，查看代表作說明</span>';
   };
 
+  const show = d => {
+    tooltip.innerHTML = `<div class="cap-tt-dot"></div><span><span class="cap-tt-name">${d.name}</span><span class="cap-tt-desc"> — ${d.desc}</span></span>`;
+  };
+  let pinned = null;
+
   DOTS.forEach(d => {
     const wrap = document.createElement('div');
     wrap.className = 'cap-dot';
     wrap.style.left = d.left + '%';
     wrap.style.top  = d.top  + '%';
+    wrap.setAttribute('role', 'button');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('aria-label', d.name + ' — ' + d.desc);
 
     const circle = document.createElement('div');
     circle.className = 'cap-dot-circle';
@@ -3919,11 +4083,58 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
     wrap.appendChild(lbl);
     matrix.appendChild(wrap);
 
-    wrap.addEventListener('mouseenter', () => {
-      tooltip.innerHTML = `<div class="cap-tt-dot"></div><span><span class="cap-tt-name">${d.name}</span><span class="cap-tt-desc"> — ${d.desc}</span></span>`;
-    });
-    wrap.addEventListener('mouseleave', reset);
+    // hover (desktop) + focus (keyboard) reveal
+    wrap.addEventListener('mouseenter', () => { if (!pinned) show(d); });
+    wrap.addEventListener('mouseleave', () => { if (!pinned) reset(); });
+    wrap.addEventListener('focus', () => show(d));
+    wrap.addEventListener('blur', () => { if (!pinned) reset(); });
+    // tap / click to pin (touch + mouse)
+    wrap.addEventListener('click', (e) => { e.preventDefault(); pinned = (pinned === d) ? null : d; pinned ? show(d) : reset(); });
+    wrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pinned = (pinned === d) ? null : d; pinned ? show(d) : reset(); } });
   });
+  // click elsewhere clears the pin
+  document.addEventListener('click', (e) => { if (pinned && !e.target.closest('.cap-dot')) { pinned = null; reset(); } });
+})();
+</script>
+
+<script>
+// ─── Career Journey: drag / wheel / keyboard scroll + edge fades ───
+(function(){
+  const s = document.getElementById('jrScroll');
+  if (!s) return;
+  let down=false, startX=0, startL=0;
+  s.addEventListener('mousedown', e=>{ down=true; s.classList.add('drag'); startX=e.pageX; startL=s.scrollLeft; });
+  window.addEventListener('mouseup', ()=>{ down=false; s.classList.remove('drag'); });
+  window.addEventListener('mousemove', e=>{ if(!down) return; e.preventDefault(); s.scrollLeft = startL - (e.pageX - startX); });
+
+  // keyboard access
+  s.tabIndex = 0;
+  s.setAttribute('role', 'region');
+  s.setAttribute('aria-label', '職涯時間軸 — 可用左右方向鍵、滑鼠拖曳或滾輪瀏覽');
+  s.addEventListener('keydown', e=>{
+    if (e.key === 'ArrowRight') { s.scrollBy({left: 180, behavior: 'smooth'}); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { s.scrollBy({left: -180, behavior: 'smooth'}); e.preventDefault(); }
+  });
+
+  // vertical wheel → horizontal, but release at edges so the page keeps scrolling
+  s.addEventListener('wheel', e=>{
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const atStart = s.scrollLeft <= 0;
+    const atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 1;
+    if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+    s.scrollLeft += e.deltaY; e.preventDefault();
+  }, { passive: false });
+
+  // edge-fade state
+  function updateEdges(){
+    const atStart = s.scrollLeft <= 2;
+    const atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 2;
+    s.classList.toggle('at-start', atStart);
+    s.classList.toggle('at-end', atEnd);
+  }
+  s.addEventListener('scroll', updateEdges, { passive: true });
+  window.addEventListener('resize', updateEdges, { passive: true });
+  updateEdges();
 })();
 </script>
 
