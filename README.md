@@ -16,7 +16,7 @@ A design researcher whose questions become curriculum, whose curriculum trains a
 
 | | |
 |---|---|
-| 🏆 Student Awards Mentored | 223+ (Reddot · iF · IDEA · Golden Pin) |
+| 🏆 Student Awards Mentored | 226+ (Reddot · iF · IDEA · Golden Pin) |
 | 💡 Patents | 37 (Design / Utility / Invention / USA) |
 | 💰 Crowdfunding | NT$21M+ · 19/19 campaigns · 21,420 backers |
 | 🌍 Export Countries | 70+ |
@@ -27,7 +27,7 @@ A design researcher whose questions become curriculum, whose curriculum trains a
 
 ## Tech
 
-Single-page HTML · No framework · Pure CSS + Vanilla JS  
+Single-page HTML · No framework · Pure CSS + Vanilla JS
 Images hosted on Lychee (self-hosted NAS)
 
 ---
